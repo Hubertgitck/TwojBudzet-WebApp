@@ -16,7 +16,7 @@
              */
             $('#formProfile').validate({
                 rules: {
-                    name: 'required',
+                    username: 'required',
                     email: {
                         required: true,
                         email: true,
@@ -70,8 +70,8 @@
     <form method="post" id="formProfile" action="/profile/update">
 
         <div class="form-group">
-            <label for="inputName">Name</label>
-            <input id="inputName" name="name" placeholder="Name" value="{{ user.name }}" required class="form-control" />
+            <label for="inputUsernamrame">Username</label>
+            <input id="inputUsername" name="username" placeholder="Username" value="{{ user.username }}" required class="form-control" />
         </div>
         <div class="form-group">
             <label for="inputEmail">Email address</label>

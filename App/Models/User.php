@@ -53,13 +53,13 @@ class User extends \Core\Model
             $hashed_token = $token->getHash();
             $this->activation_token = $token->getValue();
 
-            $sql = 'INSERT INTO users (name, email, password_hash, activation_hash)
-                    VALUES (:name, :email, :password_hash, :activation_hash)';
+            $sql = 'INSERT INTO users (username, email, password_hash, activation_hash)
+                    VALUES (:username, :email, :password_hash, :activation_hash)';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
 
-            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
             $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
@@ -77,9 +77,9 @@ class User extends \Core\Model
      */
     public function validate()
     {
-        // Name
-        if ($this->name == '') {
-            $this->errors[] = 'Name is required';
+        // Userame
+        if ($this->username == '') {
+            $this->errors[] = 'Userame is required';
         }
 
         // email address
@@ -368,10 +368,10 @@ class User extends \Core\Model
     {
         $url = 'http://' . $_SERVER['HTTP_HOST'] . '/signup/activate/' . $this->activation_token;
 
-        $text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
+        //$text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
         $html = View::getTemplate('Signup/activation_email.html', ['url' => $url]);
 
-        Mail::send($this->email, 'Account activation', $text, $html);
+        Mail::send($this->email, 'Account activation', $html,$this->username);
     }
 
     /**
@@ -408,7 +408,7 @@ class User extends \Core\Model
      */
     public function updateProfile($data)
     {
-        $this->name = $data['name'];
+        $this->username = $data['username'];
         $this->email = $data['email'];
 
         // Only validate and update the password if a value provided
@@ -421,7 +421,7 @@ class User extends \Core\Model
         if (empty($this->errors)) {
 
             $sql = 'UPDATE users
-                    SET name = :name,
+                    SET username = :username,
                         email = :email';
 
             // Add password if it's set
@@ -435,7 +435,7 @@ class User extends \Core\Model
             $db = static::getDB();
             $stmt = $db->prepare($sql);
 
-            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
 

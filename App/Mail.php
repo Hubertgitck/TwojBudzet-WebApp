@@ -3,7 +3,9 @@
 namespace App;
 
 use App\Config;
-use Mailgun\Mailgun;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
 
 /**
  * Mail
@@ -23,15 +25,33 @@ class Mail
      *
      * @return mixed
      */
-    public static function send($to, $subject, $text, $html)
+    public static function send($to, $subject,$html,$username)
     {
-        $mg = new Mailgun(Config::MAILGUN_API_KEY);
-        $domain = Config::MAILGUN_DOMAIN;
+      $mail = new PHPMailer();
+      $mail->IsSMTP();
+      $mail->Mailer = "smtp";
 
-        $mg->sendMessage($domain, ['from'    => 'your-sender@your-domain.com',
-                                   'to'      => $to,
-                                   'subject' => $subject,
-                                   'text'    => $text,
-                                   'html'    => $html]);
+      $mail->SMTPDebug  = 1;  
+      $mail->SMTPAuth   = TRUE;
+      $mail->SMTPSecure = "tls";
+      $mail->Port       = 587;
+      $mail->Host       = "smtp.gmail.com";
+      $mail->Username   = "hubertkozielsmtp@gmail.com";
+      $mail->Password   = "tcwipzijlexwovmw";
+      
+      $mail->CharSet = "UTF-8";
+      $mail->IsHTML(true);
+      $mail->AddAddress($to, $username);
+      $mail->SetFrom("hubertkozielsmtp@gmail.com", "Twój budżet") ;
+      $mail->Subject = $subject;
+
+		  $mail->MsgHTML($html); 
+
+      if(!$mail->Send()) {
+        echo "Error while sending Email.";
+        var_dump($mail);
+      } else {
+        echo "Email sent successfully";
+}
     }
 }
