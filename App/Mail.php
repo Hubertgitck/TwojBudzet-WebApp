@@ -20,18 +20,17 @@ class Mail
      *
      * @param string $to Recipient
      * @param string $subject Subject
-     * @param string $text Text-only content of the message
      * @param string $html HTML content of the message
      *
      * @return mixed
      */
-    public static function send($to, $subject,$html,$username)
+    public static function send($to, $subject,$html)
     {
       $mail = new PHPMailer();
       $mail->IsSMTP();
       $mail->Mailer = "smtp";
 
-      $mail->SMTPDebug  = 1;  
+      $mail->SMTPDebug  = false;  
       $mail->SMTPAuth   = TRUE;
       $mail->SMTPSecure = "tls";
       $mail->Port       = 587;
@@ -41,17 +40,23 @@ class Mail
       
       $mail->CharSet = "UTF-8";
       $mail->IsHTML(true);
-      $mail->AddAddress($to, $username);
+      $mail->AddAddress($to);
       $mail->SetFrom("hubertkozielsmtp@gmail.com", "Twój budżet") ;
       $mail->Subject = $subject;
 
 		  $mail->MsgHTML($html); 
 
+      try {
+        $mail->send();
+      } catch (Exception $e) {
+          echo "Mailer Error: " . $mail->ErrorInfo;
+      }
+      /*
       if(!$mail->Send()) {
         echo "Error while sending Email.";
         var_dump($mail);
       } else {
         echo "Email sent successfully";
-}
+      */
     }
 }

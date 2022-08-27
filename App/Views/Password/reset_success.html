@@ -1,11 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Forgot password{% endblock %}
+{% block title %}Hasło zresetowane{% endblock %}
+
+{% block css %}/Css/login.css{% endblock %}
 
 {% block body %}
 
-    <h1>Password reset successfully</h1>
-
-    <p>You can now <a href="/login">login</a>.</p>
+<main>
+    <div class="container-fluid">
+        <div class="row">
+        
+            <header class="col-12 text-center text-uppercase fw-bold pt-2" id="logo" >
+                <p> Twój budżet </p>
+            </header>
+            
+            <div class="col-12 text-center mt-5">
+                <h1 class="text-success">Hasło zresetowane pomyślnie! </h1>
+                <div> 
+                    <a href="/" class="text-decoration-none"> Powrót do strony logowania</a> 
+                </div>
+            </div>	
+        </div>
+    </div>
+</main>
 
 {% endblock %}
