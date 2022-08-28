@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Dodaj wydatek{% endblock %}
+
+{% block css %}/Css/addExpense.css{% endblock %}
+
+{% block body %}
+
+<header id="logged-user-header">
+    <div id="logo" class="w-25" onclick="location.href='/home';"> Twój budżet </div>
+    <div id="logged-user-data">
+        {{current_user.username}}
+    </div>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+        <main>
+            {% for message in flash_messages %}
+			<div id="added-succesfully" class="col-12 text-center p-2 mt-4 w-50 mx-auto alert alert-{{ message.type }}">
+				{{ message.body }}
+			</div>
+			{% endfor %}
+            <div class="col-12 d-flex justify-content-center">
+                <form id="expense-form" method="post" action="/operations/addExpense">
+                    <div class="form-input">
+                        <label id="amount-label">Kwota</label>
+                        <input type="number" id="amount" name="amount" class="form-input-size" placeholder="0.00 zł" step="0.01" required />
+                    </div>
+                   
+                    <div class="form-input">
+                        <label id="date-label">Data </label>
+                        <input type="date" id="date" name="date" class="form-input-size" required />
+                    </div>
+
+                    <div class="form-input">
+                        <label>Sposób płatności</label>
+                        <div id="paymentMethod-input">
+                            <label><input type="radio" name="payment_method" value="cash" class="radio-btn" checked />Gotówka</label>
+                            <label><input type="radio" name="payment_method" value="debit card" class="radio-btn" />Karta debetowa</label>
+                            <label><input type="radio" name="payment_method" value="credit card" class="radio-btn" />Karta kredytowa</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-input">
+                        <label>Rodzaj wydatku</label>
+                        <select id="expense-category" name="expenses_category" size="1" required>
+                            <option value="" disabled selected>Wybierz wydatek</option>
+                            <option value="transport" >Transport</option>
+                            <option value="books" >Książki</option>
+                            <option value="food" >Jedzenie</option>
+                            <option value="apartments" >Mieszkanie</option>
+                            <option value="telecommunication" >Telekomunikacja</option>
+                            <option value="health" >Opieka zdrowotna</option>
+                            <option value="clothes" >Ubrania</option>
+                            <option value="hygiene" >Higiena</option>
+                            <option value="kids" >Dzieci</option>
+                            <option value="recreation" >Rozrywka</option>
+                            <option value="trip" >Wycieczka</option>
+                            <option value="savings" >Oszczędności</option>
+                            <option value="for retirement" >Na złotą jesień, czyli emeryturę</option>
+                            <option value="debt repayment" >Spłata długów</option>
+                            <option value="gift" >Darowizna</option>
+                            <option value="another" >Inne wydatki</option>
+                        </select>
+                    </div>
+                   
+                   
+                    <div class="form-input">
+                       <label id="comment-label">Komentarz (opcjonalnie)</label>
+                       <textarea class="w-100" name="comment" rows="6" placeholder="Wpisz komentarz..."></textarea>
+                    </div>
+                   
+                    <div class="form-input text-center" >
+                       <button type="submit" id="submit-button" name="submit">Dodaj</button>
+                       <button type="button" id="cancel-button" onclick="location.href='/home'">Powrót</button>
+                    </div>	  
+                </form>
+            </div>
+        </main>
+    </div>	
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<script>
+	Date.prototype.toDateInputValue = (function() {
+		var local = new Date(this);
+		local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+		return local.toJSON().slice(0,10);
+	});
+
+	window.onload = function() {
+		document.getElementById('date').value = new Date().toDateInputValue();
+	};
+</script>
+{% endblock %}

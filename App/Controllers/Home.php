@@ -14,12 +14,12 @@ class Home extends \Core\Controller
 {
 
     /**
-     * Show the index page
+     * Show the home page
      *
      * @return void
      */
-    public function loginAction()
+    public function homeAction()
     {
-        View::renderTemplate('Login/new.html');
+        View::renderTemplate('Home/home.html');
     }
 }

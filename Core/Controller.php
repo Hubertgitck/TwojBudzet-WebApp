@@ -97,7 +97,6 @@ abstract class Controller
     {
         if (! Auth::getUser()) {
 
-            //Flash::addMessage('Please login to access that page');
             Flash::addMessage('Ta strona wymaga zalogowania', Flash::INFO);
 
             Auth::rememberRequestedPage();

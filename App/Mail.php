@@ -51,12 +51,5 @@ class Mail
       } catch (Exception $e) {
           echo "Mailer Error: " . $mail->ErrorInfo;
       }
-      /*
-      if(!$mail->Send()) {
-        echo "Error while sending Email.";
-        var_dump($mail);
-      } else {
-        echo "Email sent successfully";
-      */
     }
 }
