@@ -16,7 +16,7 @@ class Operations extends \Core\Controller
 {
     /**
      * Add Income
-     * 
+     *
      * @return void
      */
     public function addIncomeAction()
@@ -36,7 +36,7 @@ class Operations extends \Core\Controller
     }
     /**
      * Add Expense
-     * 
+     *
      * @return void
      */
     public function addExpenseAction()
@@ -56,9 +56,9 @@ class Operations extends \Core\Controller
 
     }
 
-    public function showBalanceAction()
+    public function balanceAction()
     {
-        
+        View::renderTemplate('Operations/balance.html');
 
 
 

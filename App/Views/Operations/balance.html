@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}Bilans{% endblock %}
+
+{% block css %}/Css/balance.css{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script>
+    $.datepicker.setDefaults({
+    showOn: "button",
+    buttonImage: "img/datepicker.png",
+    buttonText: "Date Picker",
+    buttonImageOnly: true,
+    dateFormat: 'yy-mm-dd'
+    });
+    $(function() {
+        $("#post_at").datepicker();
+        $("#post_at_to_date").datepicker();
+    });
+</script>
+
+{% endblock %}
+
+{% block body %}
+
+<header id="logged-user-header">
+    <div id="logo" class="w-25" onclick="location.href='/home';"> Twój budżet </div>
+    <div id="logged-user-data">
+        {{current_user.username}}
+    </div>
+</header>
+
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <form class="search-form" method="post" action="">
+                    <input type="text" placeholder="From Date" id="post_at" name="search[post_at]" class="ms-4 input-control" />
+                    <input type="text" placeholder="To Date" id="post_at_to_date" name="search[post_at_to_date]" class="input-control"  />
+                    <input class="btn btn-primary date-button" type="submit" name="go" value="Pokaż">
+                    <input class="btn btn-primary date-button" type="submit" name="last_month" value="Ostatni miesiąc">
+                    <button class="btn btn-secondary" type="button" id="back-button" onclick="location.href='/home'">Powrót</button>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="row mx-2">
+            <table class="col-8 col-md-6 col-lg-3 operations-table" id="incomes">
+                <tr>
+                    <th colspan="2">Przychody</th>
+                </tr>
+                <tr>
+                    <td>Wynagrodzenie</td>
+                    <td> zł</td>
+                </tr>
+                <tr>
+                    <td>Odsetki bankowe</td>
+                    <td> zł</td>
+                </tr>
+                <tr>
+                    <td>Sprzedaż na allegro</td>
+                    <td> zł</td>
+                </tr>
+                <tr>
+                    <td>Inne</td>
+                    <td> zł</td>
+                </tr>
+                <tr>
+                    <td class="total-amount">Suma przychodów:</td>
+                    <td> zł</td>
+                </tr>
+            </table>
+
+            <div class="col-9">
+                <div id="piechart_3d_incomes" class="pt-5" style="width: 500px; height: 300px;"></div>
+            </div>
+        </div>
+
+        <div class="row mx-2">
+                <table class="col-10 col-md-6 col-lg-3 operations-table" id="expenses">
+                    <tr>
+                        <th colspan="2">Wydatki</th>
+                    </tr>
+                    <tr>
+                        <td>Jedzenie</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Mieszkanie</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Opieka zdrowotna</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Ubranie</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Higiena</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Dzieci</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Rozrywka</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Wycieczki</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Książki</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Oszczędności</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Na złotą jesień, czyli emeryturę</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Spłata długów</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Darowizna</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Oszczędności</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td>Inne wydatki</td>
+                        <td> zł</td>
+                    </tr>
+                    <tr>
+                        <td class="total-amount">Suma wydatków: </td>
+                        <td> zł</td>
+                    </tr>
+
+                </table>
+
+
+            <div class="col-9">
+                <div id="piechart_3d_expenses" class="pt-3" style="width: 500px; height: 300px;"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
+
+
+{% block footer %}
+
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script>
+    $.datepicker.setDefaults({
+    showOn: "button",
+    buttonImage: "img/datepicker.png",
+    buttonText: "Date Picker",
+    buttonImageOnly: true,
+    dateFormat: 'yy-mm-dd'
+    });
+    $(function() {
+        $("#post_at").datepicker();
+        $("#post_at_to_date").datepicker();
+    });
+</script>
+<script>
+
+	google.charts.load("current", {packages:["corechart"]});
+	google.charts.setOnLoadCallback(drawIncomesChart);
+	google.charts.setOnLoadCallback(drawExpensesChart);
+	function drawIncomesChart() {
+
+		let data = google.visualization.arrayToDataTable([
+			['Category', 'Amount'],
+			['Wynagrodzenie',   1  ],
+			['Odsetki bankowe',    1 ],
+			['Sprzedaż na allegro', 1 ],
+			['Inne', 1]
+		]);
+
+		let options = {
+			title: 'Przychody',
+			is3D: true,
+			backgroundColor: 'none',
+			sliceVisibilityThreshold:0,
+		};
+
+		let chart = new google.visualization.PieChart(document.getElementById('piechart_3d_incomes'));
+		chart.draw(data, options);
+	  }
+
+	function drawExpensesChart() {
+		let data = google.visualization.arrayToDataTable([
+			['Category', 'Amount'],
+			['Jedzenie', 1],
+			['Mieszkanie', 1],
+			['Opieka zdrowotna', 1],
+			['Ubranie', 1],
+			['Higiena', 1],
+			['Dzieci', 1],
+			['Rozrywka	', 1],
+			['Wycieczka	', 1],
+			['Książki	', 1],
+			['Oszczędności	', 1],
+			['Na złotą jesień, czyli emeryturę', 1],
+			['Spłata długów', 1],
+			['Darowizna', 1],
+			['Inne wydatki', 1],
+		]);
+
+		let options = {
+			title: 'Wydatki',
+			is3D: true,
+			backgroundColor: 'none',
+			sliceVisibilityThreshold:0
+		};
+
+		let chart = new google.visualization.PieChart(document.getElementById('piechart_3d_expenses'));
+		chart.draw(data, options);
+	}
+
+    </script>
+{% endblock %}

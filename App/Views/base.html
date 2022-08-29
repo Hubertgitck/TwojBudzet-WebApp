@@ -6,14 +6,14 @@
 	<meta name="description" content="Twoja profesjonalna aplikacja do prowadzenia budżetu domowego">
 	<meta name="keywords" content="Aplikacja, budżet, finanse, domowy, bilans, tracker, śledzenie">
 	<meta name="author" content="Hubert Kozieł">
-	
+
 	<meta http-equiv="X-Ua-Compatible" content="IE=edge">
-	
+
 	<link rel="stylesheet" href="{% block css %}{% endblock %}" type="text/css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=latin-ext" rel="stylesheet" >
 
-	{% block scriptHead %}
+	{% block head %}
 	{% endblock %}
 
 </head>
@@ -21,9 +21,9 @@
 <body>
     {% block body %}
     {% endblock %}
-	
+
 	<footer class="text-center pt-1">
-		Wszelkie prawa zastrzeżone &copy; 2022 
+		Wszelkie prawa zastrzeżone &copy; 2022
 	</footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
