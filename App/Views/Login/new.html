@@ -9,38 +9,38 @@
 <main>
 	<div class="container-fluid">
 		<div class="row">
-		
+
 			<header class="col-12 text-center text-uppercase fw-bold pt-2" id="logo" >
 				<p> Twój budżet </p>
 			</header>
-			
-			<form class="col-12 text-center login-page-form" method="post" action="/home">
+
+			<form class="col-12 text-center login-page-form" method="post" action="/login/create">
 				<div class=" login-page-field">
 					<label class="field-label">Login</label>
 					<input type="text" name="email" placeholder="e-mail" value="">
 				</div>
-				
+
 				<div class="login-page-field">
 					<label class="field-label">Hasło</label>
 					<input type="password" name="password" placeholder="Hasło">
 				</div>
-				
+
 				<div id="forgot-password">
 					<a href="/password/forgot">Przypomnij hasło</a>
 				</div>
-				
+
 				<div>
-					<input type="submit" class ="button" id="loginButton" value="Zaloguj się" onclick="location.href='/home'">
+					<input type="submit" class ="button" id="loginButton" value="Zaloguj się">
 				</div>
-				
+
 				<div>
 					<p class="my-2">lub</p>
 				</div>
-				
+
 				<div>
 					<input type="button" class ="button" id="registerButton" value="Załóż konto" onclick="location.href='/signup/new'">
 				</div>
-			</form>	
+			</form>
 
 			{% for message in flash_messages %}
 			<div class="col-12 text-center p-2 mt-4 w-25 mx-auto alert alert-{{ message.type }}">

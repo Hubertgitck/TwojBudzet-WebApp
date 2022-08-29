@@ -12,7 +12,6 @@ use \App\Auth;
  */
 class Home extends \Core\Controller
 {
-
     /**
      * Show the home page
      *

@@ -6,19 +6,6 @@
 
 {% block head %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script>
-    $.datepicker.setDefaults({
-    showOn: "button",
-    buttonImage: "img/datepicker.png",
-    buttonText: "Date Picker",
-    buttonImageOnly: true,
-    dateFormat: 'yy-mm-dd'
-    });
-    $(function() {
-        $("#post_at").datepicker();
-        $("#post_at_to_date").datepicker();
-    });
-</script>
 
 {% endblock %}
 

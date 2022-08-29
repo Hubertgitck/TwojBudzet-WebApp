@@ -6,7 +6,6 @@ use \Core\View;
 use \App\Models\Operation;
 use \App\Flash;
 
-
 /**
  * Account controller
  *
@@ -25,15 +24,15 @@ class Operations extends \Core\Controller
 
         if(isset($operation->submit)){
             if($operation->addIncome()){
-            Flash::addMessage('Dodano przychód pomyślnie!', Flash::SUCCESS);
+                Flash::addMessage('Dodano przychód pomyślnie!', Flash::SUCCESS);
             }
-
             else{
-            Flash::addMessage('Nie udało się dodać przychodu, spróbuj ponownie później!', Flash::WARNING);
+                Flash::addMessage('Nie udało się dodać przychodu, spróbuj ponownie później!', Flash::WARNING);
             }
         }
         View::renderTemplate('Operations/AddIncome.html');
     }
+
     /**
      * Add Expense
      *
@@ -44,23 +43,24 @@ class Operations extends \Core\Controller
         $operation = new Operation($_POST);
 
         if(isset($operation->submit)){
-            $operation->addExpense();
-            Flash::addMessage('Dodano wydatek pomyślnie!', Flash::SUCCESS);
+            if($operation->addExpense()){
+                Flash::addMessage('Dodano wydatek pomyślnie!', Flash::SUCCESS);
+            }
+            else{
+                Flash::addMessage('Nie udało się dodać wydatku, spróbuj ponownie później!', Flash::WARNING);
+            }
         }
-
-        else{
-            Flash::addMessage('Nie udało się dodać wydatku, spróbuj ponownie później!', Flash::WARNING);
-        }
-
         View::renderTemplate('Operations/AddExpense.html');
-
     }
 
+      /**
+     * Check balance
+     *
+     * @return void
+     */
     public function balanceAction()
     {
         View::renderTemplate('Operations/balance.html');
-
-
 
     }
 }
