@@ -30,7 +30,7 @@ class Token
             $this->token = $token_value;
 
         } else {
-        
+
             $this->token = bin2hex(random_bytes(16));  // 16 bytes = 128 bits = 32 hex characters
         }
     }
