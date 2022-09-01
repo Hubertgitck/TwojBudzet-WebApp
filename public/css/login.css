@@ -19,6 +19,7 @@ footer{
 	font-size: 100px;
 	letter-spacing: 6px;
 	background-image:linear-gradient(rgba(190, 190, 190, 1),rgba(222, 222, 222, 0));
+	cursor:pointer;
 	text-shadow:
 	2px 2px 0 #000,
 	-1px 1px 0 #000,
@@ -28,7 +29,7 @@ footer{
 
 #forgot-password{
 	font-size: 12px;
-	margin: -15px 0 25px 110px;
+	margin: -15px 0 25px 130px;
 }
 
 #forgot-password > a{
@@ -71,6 +72,21 @@ footer{
 	color: #fff;
 	font-size: 16px;
 }
+
+#added-succesfully{
+	color: #207d20;
+	font-size: 35px;
+	min-height: 55px;
+}
+
+label.error{
+	display:block;
+}
+
+#password{
+	display: inline-block;
+}
+
 #loginButton{
 	background-color: #207d20;
 	transition: background-color, color 0.3s linear;

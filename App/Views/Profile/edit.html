@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}Rejestracja{% endblock %}
+
+{% block css %}/Css/login.css{% endblock %}
 
 {% block footer %}
     <script src="/js/hideShowPassword.min.js"></script>
@@ -36,7 +38,7 @@
                 },
                 messages: {
                     email: {
-                        remote: 'email already taken'
+                        remote: 'E-mail już w użyciu'
                     }
                 }
             });
@@ -56,8 +58,6 @@
 
 {% block body %}
 
-    <h1>Profile</h1>
-
     {% if user.errors is not empty %}
         <p>Errors:</p>
         <ul>
@@ -67,25 +67,41 @@
         </ul>
     {% endif %}
 
-    <form method="post" id="formProfile" action="/profile/update">
 
-        <div class="form-group">
-            <label for="inputUsernamrame">Username</label>
-            <input id="inputUsername" name="username" placeholder="Username" value="{{ user.username }}" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputEmail">Email address</label>
-            <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" required type="email" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" aria-describedby="helpBlock" class="form-control" />
-            <span id="helpBlock" class="help-block">Leave blank to keep current password</span>
-        </div>
+<main>
+    <div class="container-fluid">
+        <div class="row">
 
-        <button type="submit" class="btn btn-default">Save</button>
-        <a href="/profile/show">Cancel</a>
+            <header class="col-12 text-center text-uppercase fw-bold pt-2" id="logo" onclick="location.href='/';">
+                <p> Twój budżet </p>
+            </header>
 
-    </form>
+            <form class="col-12 text-center login-page-form" id="registerForm" method="post" action="/profile/update">
+
+                <div class="login-page-field" id="username">
+                    <label class="field-label" >Nazwa użytkownika</label>
+                    <input type="text" name="username" autofocus value="{{ user.username }}" required">
+                </div>
+
+                <div class=" login-page-field">
+                    <label class="field-label">Adres e-mail</label>
+                    <input type="text" name="email" placeholder="adres@domena.pl" value="{{ user.email }}"  required>
+                </div>
+
+                <div class="login-page-field">
+                    <label class="field-label">Hasło</label>
+                    <input type="password" name="password">
+                    <span id="helpBlock" class="help-block" aria-describedby="helpBlock">Zostaw puste, aby zachować aktualne hasło </span>
+                </div>
+
+                <div class="mt-5">
+                    <button type="submit" class ="button"  id="loginButton"> Zapisz</button>
+                    <input type="button" class ="button"  id="registerButton" onclick="location.href='/home'" value="Powrót">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
 
 {% endblock %}

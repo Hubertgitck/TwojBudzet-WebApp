@@ -1,18 +1,45 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}Rejestracja{% endblock %}
 
-{% block body %}
+{% block css %}/Css/login.css{% endblock %}
 
-    <h1>Profile</h1>
+{% block footer %}
 
-    <dl class="dl-horizontal">
-        <dt>Username</dt>
-        <dd>{{ user.username }}</dd>
-        <dt>email</dt>
-        <dd>{{ user.email }}</dd>
-    </dl>
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <header class="col-12 text-center text-uppercase fw-bold pt-2" id="logo" onclick="location.href='/';">
+                <p> Twój budżet </p>
+            </header>
 
-    <a href="/profile/edit">Edit</a>
+            <form class="col-12 text-center login-page-form" id="passwordForm" method="post" action="/profile/edit">
+                <div class="login-page-field" id="username">
+                    <label class="field-label" >Nazwa użytkownika</label>
+                    <input disabled type="text" name="username" autofocus value="{{ user.username }}" required">
+                </div>
+
+                <div class=" login-page-field">
+                    <label class="field-label">Adres e-mail</label>
+                    <input disabled type="text" name="email" placeholder="adres@domena.pl" value="{{ user.email }}"  required>
+
+                </div>
+
+                {% for message in flash_messages %}
+                <div id="added-succesfully" class="col-12 text-center p-2 mt-4 w-25 mx-auto alert alert-{{ message.type }}">
+                    {{ message.body }}
+                </div>
+                {% endfor %}
+
+                <div class="mt-5">
+                    <button type="submit" class ="button"  id="loginButton"> Edytuj</button>
+                    <input type="button" class ="button"  id="registerButton" onclick="location.href='/home'" value="Powrót">
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</main>
 
 {% endblock %}

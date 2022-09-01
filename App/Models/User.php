@@ -79,30 +79,30 @@ class User extends \Core\Model
     {
         // Userame
         if ($this->username == '') {
-            $this->errors[] = 'Userame is required';
+            $this->errors[] = 'Nazwa użytkownika jest wymagana';
         }
 
         // email address
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
-            $this->errors[] = 'Invalid email';
+            $this->errors[] = 'Nieprawidłowy e-mail';
         }
         if (static::emailExists($this->email, $this->id ?? null)) {
-            $this->errors[] = 'email already taken';
+            $this->errors[] = 'E-mail już w użyciu';
         }
 
         // Password
         if (isset($this->password)) {
 
             if (strlen($this->password) < 6) {
-                $this->errors[] = 'Please enter at least 6 characters for the password';
+                $this->errors[] = 'Proszę wpisać co najmniej 6 znaków';
             }
 
             if (preg_match('/.*[a-z]+.*/i', $this->password) == 0) {
-                $this->errors[] = 'Password needs at least one letter';
+                $this->errors[] = 'Hasło musi posiadać co najmniej jedną literę';
             }
 
             if (preg_match('/.*\d+.*/i', $this->password) == 0) {
-                $this->errors[] = 'Password needs at least one number';
+                $this->errors[] = 'Hasło musi posiadać co najmniej jedną cyfrę';
             }
 
         }
@@ -313,7 +313,7 @@ class User extends \Core\Model
         $user = $stmt->fetch();
 
         if ($user) {
-            
+
             // Check password reset token hasn't expired
             if (strtotime($user->password_reset_expires_at) > time()) {
 
@@ -348,10 +348,10 @@ class User extends \Core\Model
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
-                                                  
+
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
-                                          
+
             return $stmt->execute();
         }
 
@@ -367,7 +367,6 @@ class User extends \Core\Model
     {
         $url = 'http://' . $_SERVER['HTTP_HOST'] . '/signup/activate/' . $this->activation_token;
 
-        //$text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
         $html = View::getTemplate('Signup/activation_email.html', ['url' => $url]);
 
         Mail::send($this->email, 'Account activation', $html,$this->username);
@@ -397,7 +396,7 @@ class User extends \Core\Model
 
         $stmt->execute();
     }
-    
+
     /**
      * Update the user's profile
      *

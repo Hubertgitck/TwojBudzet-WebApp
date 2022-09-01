@@ -1,6 +1,6 @@
 /**
  * Add jQuery Validation plugin method for a valid password
- * 
+ *
  * Valid passwords contain at least one letter and one number.
  */
 $.validator.addMethod('validPassword',
@@ -17,5 +17,12 @@ $.validator.addMethod('validPassword',
 
         return true;
     },
-    'Must contain at least one letter and one number'
+    'Hasło musi posiadać co najmniej jedną literę i cyfrę'
 );
+
+
+//Override default message for min length
+
+jQuery.extend(jQuery.validator.messages, {
+    minlength: jQuery.validator.format("Wpisz conajmniej 6 znaków"),
+});

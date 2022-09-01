@@ -62,23 +62,23 @@
     <main>
 		<div class="container-fluid">
 			<div class="row">
-			
-				<header class="col-12 text-center text-uppercase fw-bold pt-2" id="logo" >
+
+				<header class="col-12 text-center text-uppercase fw-bold pt-2" id="logo" id="logo" onclick="location.href='/';" >
 					<p> Twój budżet </p>
 				</header>
-				
+
 				<form class="col-12 text-center login-page-form" id="registerForm" method="post" action="/signup/create">
-					
+
 					<div class="login-page-field" id="username">
 						<label class="field-label" >Nazwa użytkownika</label>
 						<input type="text" name="username" autofocus value="{{ user.username }}" required">
-					</div>	
-					
+					</div>
+
 					<div class="login-page-field">
 						<label class="field-label">Hasło</label>
 						<input type="password" name="password" required >
 					</div>
-					
+
 					<div class=" login-page-field">
 						<label class="field-label">Adres e-mail</label>
 						<input type="text" name="email" placeholder="adres@domena.pl" value="{{ user.email }}"  required>
@@ -88,9 +88,9 @@
 					<div class="mt-5">
 						<button type="submit" class ="button"  id="loginButton">Utwórz konto</button>
 						<input type="button" class ="button"  id="registerButton" onclick="location.href='/'" value="Powrót">
-					</div>		
-				
-				</form>	
+					</div>
+
+				</form>
 			</div>
 		</div>
 	</main>
