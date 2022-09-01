@@ -11,7 +11,7 @@ use \App\Flash;
  *
  * PHP version 7.0
  */
-class Operations extends \Core\Controller
+class Operations extends Authenticated
 {
     /**
      * Add Income
@@ -60,7 +60,31 @@ class Operations extends \Core\Controller
      */
     public function balanceAction()
     {
-        View::renderTemplate('Operations/balance.html');
+        $operation = new Operation($_POST);
 
+        //Check if search inputs are empty, if so, fill in with default date
+        if(!empty($operation->search['post_at']) and !isset($operation->last_month)) {
+            $post_at = date('Y-m-d');
+            $post_at = $operation->search["post_at"];
+            list($fiy,$fim,$fid) = explode("-",$post_at);
+            $post_at = "$fiy-$fim-$fid";
+
+            if(!empty($operation->search["post_at_to_date"])) {
+                $post_at_to_date = date('Y-m-d');
+                $post_at_to_date = $operation->search["post_at_to_date"];
+                list($tiy,$tim,$tid) = explode("-",$operation->search["post_at_to_date"]);
+                $post_at_to_date = "$tiy-$tim-$tid";
+
+            }
+        }
+        else{
+            $post_at = date('Y-m-d', strtotime("first day of previous month"));
+            $post_at_to_date = date('Y-m-d', strtotime("last day of previous month"));
+            unset($operation->search['last_month']);
+        }
+
+    $db_data = $operation->getBalance($post_at, $post_at_to_date);
+
+    View::renderTemplate('Operations/balance.html', ['post_at' => $post_at, 'post_at_to_date' => $post_at_to_date, 'db_data' => $db_data]);
     }
 }
