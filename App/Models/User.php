@@ -64,10 +64,44 @@ class User extends \Core\Model
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
             $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
 
-            return $stmt->execute();
+            if($stmt->execute()){
+                return $this->defaultCategoriesBind($db->lastInsertId());
+            }
+
+            return false;
         }
 
         return false;
+    }
+
+    /**
+     * Bind default categories with just created user
+     *
+     * @return boolean  True if the user was saved, false otherwise
+     */
+
+    public function defaultCategoriesBind($user_id){
+
+        $sql = 'INSERT INTO expenses_category_assigned_to_users(id, user_id, name)
+        SELECT NULL,:user_id, name
+        FROM expenses_category_default;
+
+        INSERT INTO incomes_category_assigned_to_users(id, user_id, name)
+        SELECT NULL,:user_id, name
+        FROM incomes_category_default;
+
+        INSERT INTO payment_methods_assigned_to_users(id, user_id, name)
+        SELECT NULL,:user_id, name
+        FROM payment_methods_default;
+        ';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_STR);
+
+        return $stmt->execute();
+
     }
 
     /**
