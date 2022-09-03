@@ -76,11 +76,14 @@ class Operations extends Authenticated
                 $post_at_to_date = "$tiy-$tim-$tid";
 
             }
-        }
-        else{
+        } elseif(isset($operation->last_month)){
             $post_at = date('Y-m-d', strtotime("first day of previous month"));
             $post_at_to_date = date('Y-m-d', strtotime("last day of previous month"));
             unset($operation->search['last_month']);
+        }
+        else{
+            $post_at = date('Y-m-01');
+            $post_at_to_date = date('Y-m-t');
         }
 
     $db_data = $operation->getBalance($post_at, $post_at_to_date);
