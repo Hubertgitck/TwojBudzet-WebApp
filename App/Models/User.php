@@ -77,7 +77,7 @@ class User extends \Core\Model
     /**
      * Bind default categories with just created user
      *
-     * @return boolean  True if the user was saved, false otherwise
+     * @return boolean  True if categories were bind, false otherwise
      */
 
     public function defaultCategoriesBind($user_id){

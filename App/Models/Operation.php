@@ -80,7 +80,7 @@ class Operation extends \Core\Model
     /**
     * getBalance function
     *
-    * @return boolean
+    * @return array of expenses and incomes
     */
     public function getBalance($from_date, $to_date)
     {
