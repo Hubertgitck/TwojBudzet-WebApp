@@ -1,11 +1,27 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}Rejestracja{% endblock %}
 
+{% block css %}/Css/login.css{% endblock %}
+
 {% block body %}
 
-    <h1>Rejestracja</h1>
+<main>
+    <div class="container-fluid">
+        <div class="row">
 
-    <p>Sukces! Twoje konto jest teraz aktywne! <a href="/login">Zaloguj się</a>.</p>
+            <header class="col-12 text-center text-uppercase fw-bold pt-2" id="logo" >
+                <p> Twój budżet </p>
+            </header>
+
+            <div class="col-12 text-center mt-5">
+                <h1 class="text-success"> Gratulacje! Twoje konto jest aktywne.</h1>
+                <div class="mt-4">
+                    <a href="/" class="text-decoration-none"> Powrót do strony logowania</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
 {% endblock %}
