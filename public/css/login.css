@@ -59,9 +59,19 @@ footer{
 	width:200px;
 }
 
+.login-page-password-field{
+	position: relative;
+	right: 12px;
+}
+
 .field-label{
 	font-size: 20px;
 	margin-bottom: 2px;
+}
+
+.fa-eye{
+	width:20px;
+	height:18px;
 }
 .button{
 	height:45px;
@@ -85,6 +95,7 @@ label.error{
 
 #password{
 	display: inline-block;
+	width: 200px;
 }
 
 #loginButton{
