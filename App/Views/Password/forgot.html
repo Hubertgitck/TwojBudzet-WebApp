@@ -14,7 +14,7 @@
 					<p> Twój budżet </p>
 				</header>
 
-				<form class="col-12 text-center login-page-form" id="registerForm" method="post" action="/password/request-reset">
+				<form class="col-12 text-center login-page-form" id="passwordForm" method="post" action="/password/request-reset">
 
 					<div class=" login-page-field">
 						<label class="field-label">Adres e-mail</label>
@@ -22,7 +22,7 @@
 
 					</div>
 
-					<div class="mt-5">
+					<div class="mt-3">
 						<button type="submit" class ="button"  id="loginButton">Reset hasła</button>
 					</div>
 
@@ -30,5 +30,27 @@
 			</div>
 		</div>
 	</main>
+
+{% endblock %}
+
+{% block footer %}
+<script src="/js/app.js"></script>
+
+<script>
+	$(document).ready(function() {
+
+		/**
+		 * Validate the form
+		 */
+		$('#passwordForm').validate({
+			rules: {
+				email: {
+                    required: true,
+                    email: true
+                }
+			}
+		});
+});
+</script>
 
 {% endblock %}

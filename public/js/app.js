@@ -21,8 +21,9 @@ $.validator.addMethod('validPassword',
 );
 
 
-//Override default message for min length
+//Override default message jQuery validator
 
 jQuery.extend(jQuery.validator.messages, {
-    minlength: jQuery.validator.format("Wpisz conajmniej 6 znaków"),
+    email: "Proszę wpisać poprawny adres e-mail",
+    minlength: jQuery.validator.format("Wpisz conajmniej 6 znaków")
 });
