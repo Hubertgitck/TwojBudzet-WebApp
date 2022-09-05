@@ -32,7 +32,7 @@ main{
 	letter-spacing: 6px;
 	text-transform: uppercase;
 	cursor:pointer;
-	text-shadow: 
+	text-shadow:
 	0.5px 0.5px 0 #000,
 	-1px 1px 0 #000,
 	-1px -1px 0 #000,
@@ -97,8 +97,9 @@ div.ui-datepicker > .ui-datepicker-header{
 	text-align: center;
 }
 
+
 @media (max-width: 575px){
-	
+
 	.date-button,#back-button{
 		display: inline-block;
 		margin:14px auto 0 auto;
@@ -107,7 +108,7 @@ div.ui-datepicker > .ui-datepicker-header{
 		text-align: center;
 	}
 }
-	
+
 
 
 

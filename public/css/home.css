@@ -27,7 +27,7 @@ main{
 	text-transform: uppercase;
 	position: relative;
 	background-image:linear-gradient(rgba(190, 190, 190, 1),rgba(222, 222, 222, 0));
-	text-shadow: 
+	text-shadow:
 	0.5px 0.5px 0 #000,
 	-1px 1px 0 #000,
 	-1px -1px 0 #000,
@@ -44,7 +44,7 @@ main{
 	background-color: rgba(243,134,48, 0.7);
 	border-radius: 10px;
 	margin: 14px 5px 5px 5px;
-	color: rgba(0,0,0, 1); 
+	color: rgba(0,0,0, 1);
 	display: block;
 	padding: 15px 0 15px 10px;
 	font-size: 22px;
@@ -62,7 +62,7 @@ main{
 	background-color: rgba(243,134,48, 0.7);
 	border-radius: 30px;
 	margin-bottom: 18px;
-	color: #000; 
+	color: #000;
 	padding: 15px 0 15px 0;
 	font-size: 22px;
 	text-decoration: none;
@@ -77,25 +77,32 @@ main{
 }
 
 @media (max-width: 575px){
-	
+
 	#menu-list{
 		padding: 0px;
 	}
-	
+
 	#menu-list > li{
 		font-size: 14px;
 		border-radius:12px;
 		margin-bottom: 12px;
 		padding: 10px 2px 10px 0;
 	}
-	
+
 	#operations > p{
 		font-size: 16px;
+	}
+
+	#logged-user-data{
+		position:relative;
+		display:block;
+		top: -3rem;
+		left:10px;
 	}
 }
 
 @media (min-width: 575px) and (max-width: 820px){
-	
+
 	#menu-list > li{
 		font-size: 16px;
 	}
