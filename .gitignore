@@ -1,7 +1,7 @@
 #### My folders
-/logs
-/App/Config.php
-/App/Mail.php
+*/logs
+*/App/Config.php
+*/App/Mail.php
 
 #### Windows
 # Windows thumbnail cache files
