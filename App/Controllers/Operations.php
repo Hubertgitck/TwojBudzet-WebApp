@@ -62,32 +62,11 @@ class Operations extends Authenticated
     {
         $operation = new Operation($_POST);
 
-        //Check if search inputs are empty, if so, fill in with default date
-        if(!empty($operation->search['post_at']) and !isset($operation->last_month)) {
-            $post_at = date('Y-m-d');
-            $post_at = $operation->search["post_at"];
-            list($fiy,$fim,$fid) = explode("-",$post_at);
-            $post_at = "$fiy-$fim-$fid";
+        $operation->getDateRange();
 
-            if(!empty($operation->search["post_at_to_date"])) {
-                $post_at_to_date = date('Y-m-d');
-                $post_at_to_date = $operation->search["post_at_to_date"];
-                list($tiy,$tim,$tid) = explode("-",$operation->search["post_at_to_date"]);
-                $post_at_to_date = "$tiy-$tim-$tid";
+        $db_data = $operation->getBalance();
 
-            }
-        } elseif(isset($operation->last_month)){
-            $post_at = date('Y-m-d', strtotime("first day of previous month"));
-            $post_at_to_date = date('Y-m-d', strtotime("last day of previous month"));
-            unset($operation->search['last_month']);
-        }
-        else{
-            $post_at = date('Y-m-01');
-            $post_at_to_date = date('Y-m-t');
-        }
+        View::renderTemplate('Operations/balance.html', ['post_at' => $operation->post_at, 'post_at_to_date' => $operation->post_at_to_date, 'db_data' => $db_data]);
 
-    $db_data = $operation->getBalance($post_at, $post_at_to_date);
-
-    View::renderTemplate('Operations/balance.html', ['post_at' => $post_at, 'post_at_to_date' => $post_at_to_date, 'db_data' => $db_data]);
     }
 }

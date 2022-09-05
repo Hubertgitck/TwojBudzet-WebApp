@@ -82,8 +82,11 @@ class Operation extends \Core\Model
     *
     * @return array of expenses and incomes
     */
-    public function getBalance($from_date, $to_date)
+    public function getBalance()
     {
+        $from_date = $this->post_at;
+        $to_date = $this->post_at_to_date;
+
         $current_user_id = $_SESSION['user_id'];
         $incomes_sum = array();
         $incomes_sum['amount'] = 0;
@@ -141,6 +144,38 @@ class Operation extends \Core\Model
         $db_expenses_summed['expenses_sum'] = $expenses_sum;
 
         return array_merge($db_incomes_summed, $db_expenses_summed);
+
+    }
+
+     /**
+    * getDateRange function
+    *
+    * @return void
+    */
+
+    public function getDateRange(){
+        if(!empty($this->search['post_at']) and !isset($this->last_month)) {
+            $post_at = date('Y-m-d');
+            $post_at = $this->search["post_at"];
+            list($fiy,$fim,$fid) = explode("-",$post_at);
+            $this->post_at = "$fiy-$fim-$fid";
+
+            if(!empty($this->search["post_at_to_date"])) {
+                $post_at_to_date = date('Y-m-d');
+                $post_at_to_date = $this->search["post_at_to_date"];
+                list($tiy,$tim,$tid) = explode("-",$post_at_to_date);
+                $this->post_at_to_date = "$tiy-$tim-$tid";
+
+            }
+        } elseif(isset($this->last_month)){
+            $this->post_at = date('Y-m-d', strtotime("first day of previous month"));
+            $this->post_at_to_date = date('Y-m-d', strtotime("last day of previous month"));
+            unset($this->search['last_month']);
+        }
+        else{
+            $this->post_at = date('Y-m-01');
+            $this->post_at_to_date = date('Y-m-t');
+        }
 
     }
 }
