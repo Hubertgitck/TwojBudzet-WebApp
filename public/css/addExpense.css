@@ -114,6 +114,22 @@ footer{
 	cursor: pointer;
 }
 
+div.ui-datepicker {
+	background-color: #e7e7e7;
+	border-radius: 8px;
+	border:1px solid #000 !important;
+}
+
+div.ui-datepicker > .ui-datepicker-header{
+	background-color: #fca544;
+	border-radius: 8px;
+}
+
+.ui-datepicker-calendar .ui-state-default{
+	border-radius: 6px;
+	text-align: center;
+}
+
 
 
 

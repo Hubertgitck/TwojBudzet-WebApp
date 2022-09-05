@@ -25,12 +25,12 @@
                 <form id="expense-form" method="post" action="/operations/addExpense">
                     <div class="form-input">
                         <label id="amount-label">Kwota</label>
-                        <input type="number" id="amount" name="amount" class="form-input-size" placeholder="0.00 zł" step="0.01" required />
+                        <input type="number" id="amount" name="amount" class="form-input-size" placeholder="0.00 zł" step="0.01" min="0.01" required />
                     </div>
 
                     <div class="form-input">
                         <label id="date-label">Data </label>
-                        <input type="date" id="date" name="date" class="form-input-size" required />
+                        <input type="date" id="date" name="date" class="form-input-size" min="2000-01-01" required />
                     </div>
 
                     <div class="form-input">
@@ -84,15 +84,36 @@
 {% endblock %}
 
 {% block footer %}
-<script>
-	Date.prototype.toDateInputValue = (function() {
-		var local = new Date(this);
-		local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-		return local.toJSON().slice(0,10);
-	});
 
-	window.onload = function() {
-		document.getElementById('date').value = new Date().toDateInputValue();
-	};
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script>
+
+</script>
+
+<!--Override default date picker with jQuery datepicker-->
+<script>
+    $.datepicker.setDefaults({
+    dateFormat: 'yy-mm-dd',
+    yearRange: '2000:c'
+    });
+
+    $(document).ready(function () {
+    loaddatepicker();
+});
+
+    $(document).ajaxComplete(function () {
+    loaddatepicker();
+});
+
+function loaddatepicker(){
+    $('input[type=date]').on('click', function(event) {
+                event.preventDefault();
+            });
+
+            //Enable jquery-ui date time picker
+            $('input[type="date"]').datepicker().datepicker( "setDate", new Date());;
+}
 </script>
 {% endblock %}
