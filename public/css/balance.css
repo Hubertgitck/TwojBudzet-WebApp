@@ -109,6 +109,14 @@ div.ui-datepicker > .ui-datepicker-header{
 	}
 }
 
+@media (min-width: 1353px){
+
+	#piechart_3d_incomes{
+		margin-top:20px!important;
+	}
+}
+
+
 
 
 
