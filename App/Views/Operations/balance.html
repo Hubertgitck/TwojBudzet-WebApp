@@ -34,106 +34,148 @@
         </div>
 
         <div class="row mx-2">
-            <table class="col-12 col-sm-4 col-md-6 col-lg-2 operations-table" id="incomes">
-                <tr>
-                    <th colspan="2">Przychody</th>
-                </tr>
-                <tr>
-                    <td> Wynagrodzenie</td>
-                    <td> {{db_data.Salary.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Odsetki bankowe</td>
-                    <td>{{db_data.Interest.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Sprzedaż na allegro</td>
-                    <td>{{db_data.Allegro.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Inne</td>
-                    <td>{{db_data.Another.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td class="total-amount">Suma przychodów:</td>
-                    <td>{{db_data.incomes_sum.amount|number_format(2, ',')}} zł</td>
-                </tr>
-            </table>
+            <div class="col-12 col-sm-4 col-md-6 col-lg-4 mt-2">
+                <table class="table table-striped">
+                    <caption>
+                        Przychody
+                    </caption>
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="w-auto" scope="col">#</th>
+                            <th scope="col">Kategoria</th>
+                            <th scope="col">Kwota</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td scope="row"> Wynagrodzenie</td>
+                            <td> {{db_data.Salary.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Odsetki bankowe</td>
+                            <td>{{db_data.Interest.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Sprzedaż na allegro</td>
+                            <td>{{db_data.Allegro.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Inne</td>
+                            <td>{{db_data.Another.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td scope="row">Suma przychodów:</td>
+                            <td>{{db_data.incomes_sum.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <div class="col-12 col-sm-8 col-md-6 col-lg-10 d-flex align-middle ">
-                <div id="piechart_3d_incomes" class="m-auto w-100"></div>
+            <div class="col-12 col-sm-8 col-md-6 col-lg-8 d-flex align-middle ">
+                <div id="piechart_3d_incomes" class="m-auto w-100 h-100"></div>
             </div>
         </div>
 
         <div class="row mx-2">
-            <table class="col-12 col-sm-4 col-md-6 col-lg-2 operations-table" id="expenses">
-                <tr>
-                    <th colspan="2">Wydatki</th>
-                </tr>
-                <tr>
-                    <td>Jedzenie</td>
-                    <td>{{db_data.Food.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Mieszkanie</td>
-                    <td>{{db_data.Apartments.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Opieka zdrowotna</td>
-                    <td>{{db_data.Health.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Ubranie</td>
-                    <td>{{db_data.Clothes.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Higiena</td>
-                    <td>{{db_data.Hygiene.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Dzieci</td>
-                    <td>{{db_data.Kids.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Rozrywka</td>
-                    <td>{{db_data.Recreation.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Wycieczki</td>
-                    <td>{{db_data.Trip.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Książki</td>
-                    <td>{{db_data.Books.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Oszczędności</td>
-                    <td>{{db_data.Savings.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Na złotą jesień, czyli emeryturę</td>
-                    <td>{{db_data["For Retirement"].amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Spłata długów</td>
-                    <td>{{db_data["Debt Repayment"].amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Darowizna</td>
-                    <td>{{db_data.Gift.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td>Inne wydatki</td>
-                    <td>{{db_data.Another.amount|number_format(2, ',')}} zł</td>
-                </tr>
-                <tr>
-                    <td class="total-amount">Suma wydatków: </td>
-                    <td>{{db_data.expenses_sum.amount|number_format(2, ',')}} zł</td>
-                </tr>
-            </table>
+            <div class="col-12 col-sm-4 col-md-6 col-lg-4">
+                <table class="table table-striped">
+                    <caption>
+                        Wydatki
+                    </caption>
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="w-auto" scope="col">#</th>
+                            <th scope="col">Kategoria</th>
+                            <th scope="col">Kwota</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Jedzenie</td>
+                            <td>{{db_data.Food.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Mieszkanie</td>
+                            <td>{{db_data.Apartments.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Opieka zdrowotna</td>
+                            <td>{{db_data.Health.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Ubranie</td>
+                            <td>{{db_data.Clothes.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Higiena</td>
+                            <td>{{db_data.Hygiene.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Dzieci</td>
+                            <td>{{db_data.Kids.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Rozrywka</td>
+                            <td>{{db_data.Recreation.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Wycieczki</td>
+                            <td>{{db_data.Trip.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Książki</td>
+                            <td>{{db_data.Books.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Oszczędności</td>
+                            <td>{{db_data.Savings.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Na złotą jesień, czyli emeryturę</td>
+                            <td>{{db_data["For Retirement"].amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Spłata długów</td>
+                            <td>{{db_data["Debt Repayment"].amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Darowizna</td>
+                            <td>{{db_data.Gift.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Inne wydatki</td>
+                            <td>{{db_data.Another.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td scope="row">Suma wydatków: </td>
+                            <td>{{db_data.expenses_sum.amount|number_format(2, ',')}} zł</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <div class="col-12 col-sm-8 col-md-6 col-lg-10 d-flex align-middle ">
-                <div id="piechart_3d_expenses" class="m-auto w-100"></div>
+            <div class="col-12 col-sm-8 col-md-6 col-lg-8 d-flex align-middle ">
+                <div id="piechart_3d_expenses" class="m-auto w-100 h-100"></div>
             </div>
         </div>
     </main>
@@ -177,13 +219,11 @@
 		]);
 
 		let options = {
-			title: 'Przychody',
-			is3D: true,
             width: '100%',
             height: '100%',
+            pieHole: 0.4,
 			backgroundColor: 'none',
-			sliceVisibilityThreshold:0,
-            chartArea: {width:'80%',height:'80%'}
+			sliceVisibilityThreshold:0
 		};
 
 		let chart = new google.visualization.PieChart(document.getElementById('piechart_3d_incomes'));
@@ -211,13 +251,11 @@
 		]);
 
 		let options = {
-			title: 'Wydatki',
-			is3D: true,
-            width: '100%',
-            height: '100%',
+            width: 'auto',
+            height: 'auto',
+            pieHole: 0.4,
 			backgroundColor: 'none',
-			sliceVisibilityThreshold:0,
-            chartArea: {width:'80%',height:'80%'}
+			sliceVisibilityThreshold:0
 		};
 
 		let chart = new google.visualization.PieChart(document.getElementById('piechart_3d_expenses'));
