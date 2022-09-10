@@ -46,22 +46,6 @@
                         <label>Rodzaj wydatku</label>
                         <select id="expense-category" name="expenses_category" size="1" required>
                             <option value="" disabled selected>Wybierz wydatek</option>
-                            <option value="transport" >Transport</option>
-                            <option value="books" >Książki</option>
-                            <option value="food" >Jedzenie</option>
-                            <option value="apartments" >Mieszkanie</option>
-                            <option value="telecommunication" >Telekomunikacja</option>
-                            <option value="health" >Opieka zdrowotna</option>
-                            <option value="clothes" >Ubrania</option>
-                            <option value="hygiene" >Higiena</option>
-                            <option value="kids" >Dzieci</option>
-                            <option value="recreation" >Rozrywka</option>
-                            <option value="trip" >Wycieczka</option>
-                            <option value="savings" >Oszczędności</option>
-                            <option value="for retirement" >Na złotą jesień, czyli emeryturę</option>
-                            <option value="debt repayment" >Spłata długów</option>
-                            <option value="gift" >Darowizna</option>
-                            <option value="another" >Inne wydatki</option>
                         </select>
                     </div>
 
@@ -101,13 +85,15 @@
 
     $(document).ready(function () {
     loaddatepicker();
+    appendExpensesCategoriesToSelectList();
 });
 
     $(document).ajaxComplete(function () {
     loaddatepicker();
 });
 
-function loaddatepicker(){
+function loaddatepicker()
+{
     $('input[type=date]').on('click', function(event) {
                 event.preventDefault();
             });
@@ -115,5 +101,21 @@ function loaddatepicker(){
             //Enable jquery-ui date time picker
             $('input[type="date"]').datepicker().datepicker( "setDate", new Date());;
 }
+
+async function appendExpensesCategoriesToSelectList()
+{
+    await fetch("/api/getExpensesCategories")
+        .then(response => response.json())
+        .then((data) => result = data);
+
+        console.log(result);
+        for (let key in result){
+            let option = document.createElement("option");
+            option.text = result[key].name;
+            option.value = result[key].name;
+            let select = document.getElementById("expense-category");
+            select.appendChild(option);
+        }
+    }
 </script>
 {% endblock %}

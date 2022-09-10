@@ -36,10 +36,6 @@
                     <div class="form-input">
                         <label>Kategoria</label>
                         <div id="category-input">
-                            <label><input type="radio" name="income_category" class="radio-btn" value="salary" checked />Wynagrodzenie</label>
-                            <label><input type="radio" name="income_category" class="radio-btn" value="interest"/>Odsetki bankowe</label>
-                            <label><input type="radio" name="income_category" class="radio-btn" value="allegro"/>Sprzedaż na allegro</label>
-                            <label><input type="radio" name="income_category" class="radio-btn" value="another"/>Inne</label>
                         </div>
                     </div>
 
@@ -78,6 +74,7 @@
 
     $(document).ready(function () {
     loaddatepicker();
+    appendIncomesCategoriesToSelectList();
 });
 
     $(document).ajaxComplete(function () {
@@ -92,5 +89,33 @@ function loaddatepicker(){
             //Enable jquery-ui date time picker
             $('input[type="date"]').datepicker().datepicker( "setDate", new Date());;
 }
+
+async function appendIncomesCategoriesToSelectList()
+{
+    await fetch("/api/getIncomesCategories")
+        .then(response => response.json())
+        .then((data) => result = data);
+
+        console.log(result);
+        for (let key in result){
+            name = result[key].name;
+
+            let label = document.createElement("label");
+            label.innerText = name;
+
+            let input = document.createElement("input");
+            if (key == 0){
+                input.checked = true;
+            }
+            input.type = 'radio';
+            input.value = name;
+            input.classList.add('radio-btn');
+            input.name = 'income_category';
+
+            let select = document.getElementById("category-input");
+            label.appendChild(input);
+            select.appendChild(label);
+        }
+    }
 </script>
 {% endblock %}
