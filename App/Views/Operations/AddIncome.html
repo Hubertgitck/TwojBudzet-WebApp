@@ -109,11 +109,11 @@ async function appendIncomesCategoriesToSelectList()
             }
             input.type = 'radio';
             input.value = name;
-            input.classList.add('radio-btn');
+            input.className = 'radio-btn';
             input.name = 'income_category';
 
             let select = document.getElementById("category-input");
-            label.appendChild(input);
+            label.insertAdjacentElement('afterbegin',input);
             select.appendChild(label);
         }
     }
