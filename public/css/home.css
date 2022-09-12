@@ -67,13 +67,20 @@ main{
 	font-size: 22px;
 	text-decoration: none;
 	text-align:center;
+	transition: all .2s ease-in-out;
 }
 
 #menu-list >li:hover{
-	background-color: rgba(243,134,48, 1);
-	border: none;
+	background-color: #fca544;
 	cursor: pointer;
-	color: #000;
+	transform: scale(1.1);
+}
+
+#add-category{
+	background-color: #ff7912;
+	border: none;
+	border-radius: 10px;
+
 }
 
 @media (max-width: 575px){

@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use \App\Models\Expenses;
-use \App\Models\Incomes;
+use \App\Models\Expense;
+use \App\Models\Income;
 
 /**
  * API Controller
@@ -20,11 +20,11 @@ class Api extends Authenticated
 
     public function getExpensesCategoriesAction()
     {
-        echo json_encode(Expenses::getExpensesCategories(), JSON_UNESCAPED_UNICODE);
+        echo json_encode(Expense::getExpensesCategories(), JSON_UNESCAPED_UNICODE);
     }
 
     public function getIncomesCategoriesAction()
     {
-        echo json_encode(Incomes::getIncomesCategories(), JSON_UNESCAPED_UNICODE);
+        echo json_encode(Income::getIncomesCategories(), JSON_UNESCAPED_UNICODE);
     }
 }

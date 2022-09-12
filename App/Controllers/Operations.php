@@ -3,7 +3,9 @@
 namespace App\Controllers;
 
 use \Core\View;
-use \App\Models\Operation;
+use \App\Models\Income;
+use \App\Models\Expense;
+use \App\Models\Balance;
 use \App\Flash;
 
 /**
@@ -20,10 +22,10 @@ class Operations extends Authenticated
      */
     public function addIncomeAction()
     {
-        $operation = new Operation($_POST);
+        $income = new Income($_POST);
 
-        if(isset($operation->submit)){
-            if($operation->addIncome()){
+        if(isset($income->submit)){
+            if($income->addIncome()){
                 Flash::addMessage('Dodano przychód pomyślnie!', Flash::SUCCESS);
             }
             else{
@@ -40,10 +42,10 @@ class Operations extends Authenticated
      */
     public function addExpenseAction()
     {
-        $operation = new Operation($_POST);
+        $expense = new Expense($_POST);
 
-        if(isset($operation->submit)){
-            if($operation->addExpense()){
+        if(isset($expense->submit)){
+            if($expense->addExpense()){
                 Flash::addMessage('Dodano wydatek pomyślnie!', Flash::SUCCESS);
             }
             else{
@@ -60,13 +62,13 @@ class Operations extends Authenticated
      */
     public function balanceAction()
     {
-        $operation = new Operation($_POST);
+        $balance = new Balance($_POST);
 
-        $operation->getDateRange();
+        $balance->getDateRange();
 
-        $db_data = $operation->getBalance();
+        $db_data = $balance->getBalance();
 
-        View::renderTemplate('Operations/balance.html', ['post_at' => $operation->post_at, 'post_at_to_date' => $operation->post_at_to_date, 'db_data' => $db_data]);
+        View::renderTemplate('Operations/balance.html', ['post_at' => $balance->post_at, 'post_at_to_date' => $balance->post_at_to_date, 'db_data' => $db_data]);
 
     }
 }
