@@ -2,7 +2,7 @@
 
 {% block title %}Ustawienia{% endblock %}
 
-{% block css %}/Css/options.css{% endblock %}
+{% block css %}/Css/settings.css{% endblock %}
 
 {% block body %}
 <div class="container-fluid">
@@ -92,7 +92,7 @@
                 </h2>
                 <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
                     data-bs-parent="#accordionOptions">
-                    <div class="accordion-body">
+                    <div class="accordion-body table-responsive">
                         <form id="user-settings-form">
                             <table class="table">
                                 <tbody id="user-tbody">
@@ -112,7 +112,7 @@
                                         <td>Hasło</td>
                                         <td class="d-flex flex-column align-items-end">
                                             <p style="display: none" id="password-info">Zostaw puste jeśli nie chcesz zmieniać hasła.</p>
-                                            <input disabled class="form-control w-auto text-end" type="password" name="password" value="dummy">
+                                            <input disabled class="form-control w-auto text-end" type="password" name="password" value="dummy123456">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -227,7 +227,7 @@
 	</div>
 </div>
 
-<div id="modal-ask" class="modal fade">
+<div id="modal-ask" class="modal fade col-12">
 	<div class="modal-dialog modal-confirm">
 		<div class="modal-content">
 			<div class="modal-header-ask justify-content-center">
@@ -258,7 +258,7 @@
 {% endblock %}
 
 {% block footer %}
-<script src="/js/limits.js"></script>
+<script src="/js/api.js"></script>
 <script src="/js/app.js"></script>
 <script>
 
@@ -388,7 +388,7 @@ $('#edit-user-button').on('click', function(){
             password = $('input[name=password]').val();
             editUserSettings(username,email,password);
 
-            userPasswordInput.val("dummy");
+            userPasswordInput.val("dummy123456");
         }
         //('input[name=username]').val());
     }
