@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \App\Models\Expense;
 use \App\Models\Income;
+use \App\Models\User;
 
 /**
  * API Controller
@@ -12,8 +13,148 @@ use \App\Models\Income;
  */
 class Api extends Authenticated
 {
+
     /**
-     * Add Income
+     * Add income category to database
+     *
+     * @return
+     */
+
+    public function addIncomeCategoryAction()
+    {
+        $name = $this->route_params['name'];
+
+        Income::addIncomeCategory($name);
+    }
+
+    /**
+     * Delete income category from database
+     *
+     * @return
+     */
+
+    public function deleteIncomeCategoryAction()
+    {
+        $name = $this->route_params['name'];
+
+        Income::deleteIncomeCategory($name);
+    }
+
+    /**
+     * edit income category in db
+     *
+     * @return category names array
+     */
+    public function editIncomeCategoryAction()
+    {
+        $oldName = $this->route_params['oldname'];
+        $newName = $this->route_params['newname'];
+
+        Income::editIncomeCategory($oldName, $newName);
+    }
+
+    /**
+     * Add income category to database
+     *
+     * @return
+     */
+    public function addExpenseCategoryAction()
+    {
+        $name = $this->route_params['name'];
+        $limit = $this->route_params['limit'] ?? null;
+
+        Expense::addExpenseCategory($name,$limit);
+    }
+
+    /**
+     * Delete income category from database
+     *
+     * @return
+     */
+
+    public function deleteExpenseCategoryAction()
+    {
+        $name = $this->route_params['name'];
+
+        Expense::deleteExpenseCategory($name);
+    }
+
+    /**
+     * edit expense category in db
+     *
+     * @return category names array
+     */
+    public function editExpenseCategoryAction()
+    {
+        $oldName = $this->route_params['oldname'];
+        $newName = $this->route_params['newname'];
+        $newLimit = $this->route_params['limit'] ?? null;
+
+        Expense::editExpenseCategory($oldName, $newName,$newLimit);
+    }
+
+    /**
+     * Add payment method to database
+     *
+     * @return
+     */
+    public function addPaymentMethodAction()
+    {
+        echo $name = $this->route_params['name'];
+
+        Income::addPaymentMethod($name);
+    }
+
+    /**
+     * Delete payment method from database
+     *
+     * @return
+     */
+
+    public function deletePaymentMethodAction()
+    {
+        $name = $this->route_params['name'];
+
+        Income::deletePaymentMethod($name);
+    }
+
+    /**
+     * edit payment method
+     *
+     * @return category names array
+     */
+    public function editPaymentMethodAction()
+    {
+        $oldName = $this->route_params['oldname'];
+        $newName = $this->route_params['newname'];
+
+        Income::editPaymentMethod($oldName, $newName);
+    }
+
+     /**
+     * get income categories from database
+     *
+     * @return category names array
+     */
+
+    public function getIncomesCategoriesAction()
+    {
+        echo json_encode(Income::getIncomesCategories(), JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * get payment methods from database
+     *
+     * @return category names array
+     */
+
+    public function getPaymentMethodsAction()
+    {
+        echo json_encode(Income::getPaymentMethods(), JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * get expense categories from database
      *
      * @return category names array
      */
@@ -23,8 +164,29 @@ class Api extends Authenticated
         echo json_encode(Expense::getExpensesCategories(), JSON_UNESCAPED_UNICODE);
     }
 
-    public function getIncomesCategoriesAction()
+    /**
+     * Update user data
+     *
+     * @return category names array
+     */
+
+    public function updateUserProfileAction()
     {
-        echo json_encode(Income::getIncomesCategories(), JSON_UNESCAPED_UNICODE);
+        $userData['username'] = $this->route_params['newname'];
+        $userData['email'] = $this->route_params['newemail'];
+
+
+        $json = file_get_contents('php://input');
+        $data = json_decode($json);
+
+        $userData['password'] = $data->password;
+
+        $user = new User($userData);
+
+        $user->updateUserProfile();
     }
+
+
+
+
 }

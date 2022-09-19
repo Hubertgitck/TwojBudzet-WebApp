@@ -51,7 +51,7 @@ class Password extends \Core\Controller
         ]);
     }
 
-    /**
+        /**
      * Reset the user's password
      *
      * @return void
@@ -66,7 +66,7 @@ class Password extends \Core\Controller
 
             //echo "password valid";
             View::renderTemplate('Password/reset_success.html');
-        
+
         } else {
 
             View::renderTemplate('Password/reset.html', [
@@ -75,6 +75,8 @@ class Password extends \Core\Controller
             ]);
         }
     }
+
+
 
     /**
      * Find the user model associated with the password reset token, or end the request with a message

@@ -2,6 +2,8 @@ body{
 	background-color: #fff;
 	font-family: 'Open Sans', sans-serif;
 	margin: 0;
+	padding: 0;
+	font-size: 16px;
 }
 
 footer{
@@ -13,13 +15,13 @@ footer{
 	opacity: 70%;
 }
 
-
 #category-input > label{
 	display: block;
 	font-size: 16px;
 	cursor: pointer;
 	padding: 0 0 0 8px;
 }
+
 #category-input > label:hover{
 	background-color: rgb(232, 234, 237, 0.6);
 	border-radius: 10px;

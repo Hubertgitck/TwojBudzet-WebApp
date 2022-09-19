@@ -10,7 +10,7 @@ use \Core\View;
  *
  * PHP version 7.0
  */
-class Operation extends \Core\Model
+class Balance extends \Core\Model
 {
     /**
      * Error messages

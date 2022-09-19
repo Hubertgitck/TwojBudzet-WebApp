@@ -1,10 +1,9 @@
-
 body{
 	background-size: cover;
 	font-family: 'Open Sans', sans-serif;
 	margin: 0;
 	padding: 0;
-	font-size: 20px;
+	font-size: 16px;
 }
 
 footer{
@@ -58,18 +57,18 @@ footer{
 	color: #000;
 }
 
-#added-succesfully{
-	color: #207d20;
-	font-size: 35px;
-	min-height: 55px;
-}
-
 #expense-form{
 	text-align: left;
 	background-color: #A7DBD8;
 	padding: 20px;
 	border-radius: 8px;
 	min-width:40%;
+}
+
+#added-succesfully{
+	color: #207d20;
+	font-size: 35px;
+	min-height: 55px;
 }
 
 #expense-category{

@@ -1,0 +1,690 @@
+{% extends 'base.html' %}
+
+{% block title %}Ustawienia{% endblock %}
+
+{% block css %}/Css/options.css{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <header class="col-12 text-center text-uppercase fw-bold pt-2" id="logo" onclick="location.href='/';">
+            <p> Twój budżet </p>
+        </header>
+    </div>
+
+    <div class="row">
+        <div class="col-12 w-75 m-auto accordion accordion-flush" id="accordionOptions">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
+                        Kategorie przychodów
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionOptions">
+                    <div class="accordion-body" id="income">
+                        <table class="table">
+                            <tbody id="incomes-tbody">
+
+                            </tbody>
+                        </table>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button class="btn add-category-button" type="button" name="add-category-button" data-bs-toggle="modal" data-bs-target="#add-category-modal">
+                            Dodaj kategorię</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Kategorie wydatków
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                    data-bs-parent="#accordionOptions">
+                    <div class="accordion-body" id="expense">
+                        <table class="table">
+                            <tbody id="expenses-tbody">
+
+                            </tbody>
+                        </table>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button class="btn add-category-button" type="button" name="add-category-button" data-bs-toggle="modal" data-bs-target="#add-category-modal">
+                                Dodaj kategorię</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Metody płatności
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                    data-bs-parent="#accordionOptions">
+                    <div class="accordion-body" id="payment-method">
+                        <table class="table">
+                            <tbody id="payment-methods-tbody">
+
+                            </tbody>
+                        </table>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button class="btn add-category-button" type="button" name="add-category-button" data-bs-toggle="modal" data-bs-target="#add-category-modal">
+                                Dodaj metodę płatności</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        Użytkownik
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                    data-bs-parent="#accordionOptions">
+                    <div class="accordion-body">
+                        <form id="user-settings-form">
+                            <table class="table">
+                                <tbody id="user-tbody">
+                                    <tr id ="username">
+                                        <td>Nazwa użytkownika</td>
+                                        <td class="d-flex flex-column align-items-end">
+                                            <input class="form-control w-auto text-end" disabled type="text" name="username" autofocus value="{{ user.username }}" required>
+                                        </td>
+                                    <tr id="email">
+                                        <td>Adres e-mail</td>
+                                        <td class="d-flex flex-column align-items-end">
+                                            <input class="form-control w-auto text-end" disabled type="text" name="email" placeholder="adres@domena.pl" value="{{ user.email }}"  required>
+                                        </td>
+                                    </tr>
+
+                                    <tr id="password" class="text-end">
+                                        <td>Hasło</td>
+                                        <td class="d-flex flex-column align-items-end">
+                                            <p style="display: none" id="password-info">Zostaw puste jeśli nie chcesz zmieniać hasła.</p>
+                                            <input disabled class="form-control w-auto text-end" type="password" name="password" value="dummy">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button class="btn add-category-button" type="button" name="edit-user-button" id="edit-user-button">
+                                Edytuj</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add-category-modal" tabindex="-1" aria-labelledby="add-category-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add-category-modal-label">Dodaj kategorię</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-start">
+                <form id="add-category-form">
+                    <div class="mb-3">
+                        <label class="form-label">Nazwa</label>
+                        <input type="text" class="form-control" id="name" name="name" required/>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <label class="form-check-label limit-checkbox-label" id="limit-checkbox-label"><input type="checkbox" class="form-check-input"/>Włącz limit</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="number" class="form-control limit" id="limit" name="limit" disabled="disabled" placeholder="0.00 zł" step="0.01" min="0.01" />
+                    </div>
+
+                    <div class="modal-footer d-block">
+                        <button type="submit" class="btn btn-warning float-end" id="submit-category">Dodaj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="edit-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit-modal-label">Edytuj</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-start">
+                <form id="edit-modal-form">
+                    <div class="mb-3">
+                        <label class="form-label">Nazwa</label>
+                        <input type="text" class="form-control" id="edit-name" name="edit-name" required/>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <label class="form-check-label limit-checkbox-label" id="limit-checkbox-label"><input type="checkbox" class="form-check-input"/>Włącz limit</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="number" class="form-control limit" id="edit-limit" name="edit-limit" disabled="disabled" placeholder="0.00 zł" step="0.01" min="0.01" />
+                    </div>
+
+                    <div class="modal-footer d-block">
+                        <button type="submit" class="btn btn-warning float-end" id="edit-submit">Zapisz</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-success" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header justify-content-center">
+				<div class="icon-box">
+					<i class="fas fa-check"></i>
+				</div>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-times"></i></button>
+			</div>
+			<div class="modal-body text-center">
+				<h4>Gratulacje!</h4>
+				<p>Operacja wykonana poprawnie.</p>
+				<button class="btn btn-success" data-bs-dismiss="modal"> OK </button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-failed" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header-failed justify-content-center">
+				<div class="icon-box">
+					<i class="fas fa-times"></i>
+				</div>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-times"></i></button>
+			</div>
+			<div class="modal-body text-center">
+				<h4>Ups!</h4>
+				<p>Coś poszło nie tak, spróbuj ponownie</p>
+				<button class="btn btn-success" data-bs-dismiss="modal"> OK </button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modal-ask" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header-ask justify-content-center">
+				<div class="icon-box">
+					<i class="fas fa-question"></i>
+				</div>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-times"></i></button>
+			</div>
+			<div class="modal-body text-center">
+				<h4>Hej!</h4>
+				<p id="modal-ask-content">Czy jesteś pewien, że chcesz usunąć kategorię?</p>
+				<button id="modal-button-yes" class="btn btn-danger" data-bs-dismiss="modal"> TAK </button>
+                <button id="modal-button-no" class="btn btn-info" data-bs-dismiss="modal"> NIE </button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-loading" tabindex="-1" aria-labelledby="modal-loading-label" aria-hidden="true" data-bs-backdrop="false">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content opacity-50 justify-content-center">
+        <i class="fas fa-spinner fa-spin"></i>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+<script src="/js/limits.js"></script>
+<script src="/js/app.js"></script>
+<script>
+
+$(document).ready(function () {
+    appendIncomesCategoriesToList();
+    appendExpensesCategoriesToList();
+    appendPaymentMethodsToList();
+
+    //Removing data from modal after it was hidden.
+    $('.modal').on('hidden.bs.modal', function(e)
+    {
+        $(this).removeData();
+    });
+
+    $('#add-category-form').validate({
+        rules: {
+            name: {
+                required: true,
+                namePattern: /^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+$/
+            }
+        }
+    });
+
+    $('#edit-modal-form').validate({
+        rules: {
+            "edit-name": {
+                required: true,
+                namePattern: /^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+$/
+            }
+        }
+    });
+    let userId= '{{ user.id }}';
+
+    $('#user-settings-form').validate({
+        rules: {
+            username: 'required',
+            email: {
+                required: true,
+                email: true,
+                remote: {
+                    url: '/account/validate-email',
+                    data: {
+                        ignore_id: function() {
+                            return userId;
+                        }
+                    }
+                }
+            },
+            password: {
+                minlength: 6,
+                validPassword: true
+            }
+        },
+        messages: {
+            email: {
+                remote: 'E-mail już w użyciu'
+            }
+        }
+    });
+});
+
+//Delete button event listener
+$('tbody').on('click','.delete-button', function(){
+        rowToRemove = this.value;
+        categoryType = $(this).closest('.accordion-body').attr('id');
+        $('#modal-ask').modal('show');
+        $('#modal-ask-content').text("Czy na pewno chcesz usunąć kategorię " + rowToRemove +"?");
+
+        $('#modal-button-yes').on('click',async function(){
+            if (categoryType == 'payment-method'){
+                url = `/api/deletePaymentMethod/${rowToRemove}`;
+            } else{
+                url = '/api/delete' + categoryType + `Category/${rowToRemove}`;
+            }
+
+            result = await postDataApi(url);
+            $('#modal-ask').modal('hide');
+
+            if (result['status'] == 'success'){
+                $('#'+rowToRemove).remove();
+            } else {
+                $('#modal-failed').modal('show');
+            }
+        });
+});
+
+//Edit button event listener
+$('tbody').on('click','.edit-button', function(){
+        rowToEdit = this.value;
+        currentAmount = $(this).closest('td').siblings('[data-amount]').data('amount');
+
+        $('#edit-modal').modal('show');
+        if (currentAmount){
+            $('.limit').attr('disabled', false);
+            $('.form-check-input').prop('checked', true);
+        } else {
+            $('.limit').attr('disabled', true);
+            $('.form-check-input').prop('checked', false);
+        }
+        $('#edit-name').val(rowToEdit);
+        $('#edit-limit').val(currentAmount);
+});
+
+//Edit user settings event listener
+$('#edit-user-button').on('click', function(){
+    userSettingsInputs = $('#user-tbody input');
+    userPasswordInput = $('#user-tbody input[name=password');
+    $('#password-info').toggle();
+
+    if (userSettingsInputs.attr('disabled')){
+        userSettingsInputs.attr('disabled', false);
+        $('#edit-user-button').text('Zapisz');
+        userPasswordInput.val("");
+    } else{
+        $('#modal-loading').modal('show');
+        $('#user-settings-form').validate();
+        if($('#user-settings-form').valid()){
+            setTimeout( function(){
+            $('#modal-loading').modal('hide');
+            $('.modal-backdrop').hide();
+            },500)
+
+            $('#edit-user-button').text('Edytuj');
+            userSettingsInputs.attr('disabled', true);
+            username = $('input[name=username]').val();
+            email = $('input[name=email]').val();
+            password = $('input[name=password]').val();
+            editUserSettings(username,email,password);
+
+            userPasswordInput.val("dummy");
+        }
+        //('input[name=username]').val());
+    }
+});
+
+async function editUserSettings(username,email,password){
+
+    url = `/api/updateUserProfile/${username}/${email}`;
+    password = {'password': password};
+    result = await postDataApi(url,password);
+
+    if (!result['status'] == 'success'){
+        $('#modal-failed').modal('show');
+    }
+}
+
+async function editCategory(newName, categoryType, limit){
+    oldName = rowToEdit;
+
+    if (categoryType =='income'){
+        url = '/api/edit' + categoryType + `Category/${oldName}/${newName}`;
+    } else if (categoryType == 'expense') {
+        url = '/api/edit' + categoryType + `Category/${oldName}/${newName}/${limit}`;
+    } else if (categoryType == 'payment-method'){
+        url = `/api/editPaymentMethod/${oldName}/${newName}`;
+    }
+
+    result = await postDataApi(url);
+
+    $('#edit-modal').modal('hide');
+
+    if (result['status'] == 'success'){
+        $('#'+oldName).children().first().text(newName);
+        $('#'+oldName).attr("value", newName);
+        if (limit){
+            tdLimit = $('#'+oldName).children().eq(1);
+            tdLimit.attr('data-amount', limit);
+            tdLimit.text('Limit: ' + tdLimit.attr('data-amount')) ;
+        }
+        $('#modal-success').modal('show');
+    } else {
+        $('#modal-failed').modal('show');
+    }
+}
+
+//Get all categories from DB (option argument to add newly added category to list)
+async function appendIncomesCategoriesToList(newCategoryName = '')
+{
+    url = "/api/getIncomesCategories";
+    if (!newCategoryName){
+        result = await getDataFromApi(url);
+
+        for (let key in result){
+            name = result[key].name;
+            $("#incomes-tbody").append(rowMaker(name));
+        }
+    } else {
+        $("#incomes-tbody").append(rowMaker(newCategoryName));
+    }
+}
+
+async function appendExpensesCategoriesToList(newCategoryName = '')
+{
+    url = "/api/getExpensesCategories";
+    if (!newCategoryName){
+    result = await getDataFromApi(url);
+
+        for (let key in result){
+            name = result[key].name;
+            limit = result[key].max_limit;
+            $("#expenses-tbody").append(rowMaker(name,limit));
+        }
+    } else {
+    $("#expenses-tbody").append(rowMaker(newCategoryName));
+    }
+}
+
+async function appendPaymentMethodsToList(newMethodName = '')
+{
+    url = "/api/getPaymentMethods";
+    if (!newMethodName){
+        result = await getDataFromApi(url);
+
+        for (let key in result){
+            name = result[key].name;
+            $("#payment-methods-tbody").append(rowMaker(name));
+        }
+    } else {
+        $("#payment-methods-tbody").append(rowMaker(newMethodName));
+    }
+}
+
+//Override default behavior of submit button when adding new category
+$(document).on('click','.add-category-button, .edit-button', function(){
+    categoryType = $(this).closest('.accordion-body').attr('id');
+
+    if (categoryType == 'expense'){
+        $('.limit-checkbox-label').show();
+        $('.limit').show();
+    } else{
+        $('.limit-checkbox-label').hide();
+        $('.limit').hide();
+    }
+});
+
+async function insertCategoryToDb(name, categoryType, limit)
+{
+    if (categoryType =='income'){
+        url = '/api/add' + categoryType + `Category/${name}`;
+    } else if (categoryType == 'expense') {
+        url = '/api/add' + categoryType + `Category/${name}/${limit}`;
+    } else if (categoryType == 'payment-method'){
+        url = `/api/addPaymentMethod/${name}`;
+    }
+
+    result = await postDataApi(url);
+
+    if (result['status'] == 'success'){
+        $('#add-category-modal').modal('hide');
+        $('#modal-success').modal('show');
+
+        switch (categoryType){
+            case 'income':
+                appendIncomesCategoriesToList(name);
+                break;
+            case 'expense':
+                appendExpensesCategoriesToList(name);
+                break;
+            case 'payment-method':
+                appendPaymentMethodsToList(name);
+                break;
+        }
+    } else {
+        $('#add-category-modal').modal('hide');
+        $('#modal-failed').modal('show');
+    }
+}
+
+function rowMaker(name, limit = null){
+    let tr = document.createElement("tr");
+    let tdCategory = document.createElement("td");
+    let tdButtons = document.createElement("td");
+    let li = document.createElement("li");
+    let buttonEdit = document.createElement("button");
+    let buttonDelete = document.createElement("button");
+    let iconEdit = document.createElement("i");
+    let iconDelete = document.createElement("i");
+
+    tdCategory.textContent = name;
+    tr.id = name;
+    li.className = 'list-inline-item';
+    tdButtons.className = 'text-end';
+
+    buttonEdit.value = name;
+    buttonEdit.className = 'btn btn-success btn-sm rounded-0 edit-button';
+    buttonEdit.type ='button';
+    buttonEdit.setAttribute('data-toggle', 'tooltip');
+    buttonEdit.setAttribute('data-placement','top');
+    buttonEdit.title = 'Edytuj';
+
+    buttonDelete.value = name;
+    buttonDelete.className = 'btn btn-danger btn-sm rounded-0 ms-1 delete-button';
+    buttonDelete.type ='button';
+    buttonDelete.setAttribute('data-toggle', 'tooltip');
+    buttonDelete.setAttribute('data-placement','top');
+    buttonDelete.title = 'Usuń';
+    iconEdit.className = 'fa fa-edit';
+    iconDelete.className= 'fa fa-trash';
+
+    buttonEdit.appendChild(iconEdit);
+    buttonDelete.appendChild(iconDelete);
+    li.append(buttonEdit);
+    li.append(buttonDelete);
+    tr.append(tdCategory);
+
+    if (limit!=null){
+        let tdLimit = document.createElement("td");
+        tdLimit.setAttribute("data-amount", limit)
+        tdLimit.textContent = 'Limit: ' + tdLimit.getAttribute('data-amount') ;
+        tdLimit.className = 'limit-table';
+        tr.append(tdLimit);
+    } else if (limit ===null){
+        let tdLimit = document.createElement("td");
+        tr.append(tdLimit);
+    }
+
+    tdButtons.append(li);
+    tr.append(tdButtons);
+
+    return tr;
+}
+
+//Enable/disable limit when adding category
+$('.form-check-input').on('click', function() {
+        $(".limit").attr("disabled", !this.checked);
+});
+
+//Submit category form override default action
+$('#add-category-form').submit(function(event){
+    event.preventDefault();
+    if ($(this).valid()){
+        newCategoryName = $('input[name=name]').val();
+        if ($('input[name=limit]').is(':visible')){
+            limit = $('input[name=limit]').val();
+        } else{
+            limit = null;
+        }
+        insertCategoryToDb(newCategoryName, categoryType, limit);
+    }
+});
+
+$('#edit-modal-form').submit(function(event){
+    event.preventDefault();
+    if ($(this).valid()){
+        newCategoryName = $('input[name=edit-name]').val();
+        if ($('input[name=edit-limit]').is(':visible')){
+            limit = $('input[name=edit-limit]').val();
+        } else{
+            limit = null;
+        }
+        editCategory(newCategoryName, categoryType, limit);
+    }
+});
+
+//User settings validator
+function userSettingsValidator(){
+    let userId = '{{ user.id }}';
+
+/**
+ * Validate the form
+ */
+$('#formProfile').validate({
+    rules: {
+        username: 'required',
+        email: {
+            required: true,
+            email: true,
+            remote: {
+                url: '/account/validate-email',
+                data: {
+                    ignore_id: function() {
+                        return userId;
+                    }
+                }
+            }
+        },
+        password: {
+            minlength: 6,
+            validPassword: true
+        }
+        },
+        messages: {
+            email: {
+                remote: 'E-mail już w użyciu'
+            }
+        }
+    });
+
+}
+</script>
+
+<!--
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <header class="col-12 text-center text-uppercase fw-bold pt-2" id="logo" onclick="location.href='/';">
+                <p> Twój budżet </p>
+            </header>
+
+            <form class="col-12 text-center login-page-form" id="passwordForm" method="post" action="/profile/edit">
+                <div class="login-page-field" id="username">
+                    <label class="field-label" >Nazwa użytkownika</label>
+                    <input disabled type="text" name="username" autofocus value="{{ user.username }}" required">
+                </div>
+
+                <div class=" login-page-field">
+                    <label class="field-label">Adres e-mail</label>
+                    <input disabled type="text" name="email" placeholder="adres@domena.pl" value="{{ user.email }}"  required>
+
+                </div>
+
+                {% for message in flash_messages %}
+                <div id="added-succesfully" class="col-12 text-center p-2 mt-4 w-25 mx-auto alert alert-{{ message.type }}">
+                    {{ message.body }}
+                </div>
+                {% endfor %}
+
+                <div class="mt-5">
+                    <button type="submit" class ="button"  id="loginButton"> Edytuj</button>
+                    <input type="button" class ="button"  id="registerButton" onclick="location.href='/home'" value="Powrót">
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</main>
+-->
+{% endblock %}

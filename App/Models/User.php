@@ -438,16 +438,9 @@ class User extends \Core\Model
      *
      * @return boolean  True if the data was updated, false otherwise
      */
-    public function updateProfile($data)
+    public function updateUserProfile()
     {
-        $this->username = $data['username'];
-        $this->email = $data['email'];
-
-        // Only validate and update the password if a value provided
-        if ($data['password'] != '') {
-            $this->password = $data['password'];
-        }
-
+        $this->id = $_SESSION['user_id'];
         $this->validate();
 
         if (empty($this->errors)) {
@@ -476,7 +469,6 @@ class User extends \Core\Model
 
                 $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
                 $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
-
             }
 
             return $stmt->execute();

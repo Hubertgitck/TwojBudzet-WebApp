@@ -80,8 +80,8 @@ class Router
                 return true;
             }
         }
-
         return false;
+
     }
 
     /**
@@ -119,7 +119,6 @@ class Router
 
                 if (is_callable([$controller_object, $action])) {
                     $controller_object->$action();
-
                 } else {
                     throw new \Exception("Method $action (in controller $controller) not found");
                 }

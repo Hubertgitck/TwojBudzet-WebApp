@@ -62,7 +62,7 @@ class Expense extends \Core\Model
     {
         $current_user_id = $_SESSION['user_id'];
 
-        $sql = "SELECT name
+        $sql = "SELECT name, max_limit
         FROM expenses_category_assigned_to_users
         WHERE user_id = :user_id";
 
@@ -73,6 +73,74 @@ class Expense extends \Core\Model
         $stmt->execute();
 
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * add income category to currently logged user incomes categories list
+     *
+     * @return void
+     */
+
+    public static function addExpenseCategory($categoryName, $limit = 0)
+    {
+        $current_user_id = $_SESSION['user_id'];
+
+        $sql = "INSERT INTO expenses_category_assigned_to_users (id,user_id,name,max_limit)
+        VALUES (NULL, :user_id, :name, :max_limit)";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $current_user_id, PDO::PARAM_INT);
+        $stmt->bindValue(':name', $categoryName, PDO::PARAM_STR);
+        $stmt->bindValue(':max_limit', $limit, PDO::PARAM_STR);
+
+        $stmt->execute();
+    }
+
+    /**
+     * Delete selected category
+     *
+     * @return void
+     */
+    public static function deleteExpenseCategory($categoryName)
+    {
+        $current_user_id = $_SESSION['user_id'];
+
+        $sql = "DELETE FROM expenses_category_assigned_to_users
+        WHERE user_id=:user_id AND name=:categoryName";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $current_user_id, PDO::PARAM_INT);
+        $stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+
+        $stmt->execute();
+    }
+
+    /**
+     * Edit income category
+     *
+     * @return void
+     */
+    public static function editExpenseCategory($oldName, $newName, $newLimit)
+    {
+        $current_user_id = $_SESSION['user_id'];
+
+        $sql = "UPDATE expenses_category_assigned_to_users
+        SET name =:newName, max_limit=:newLimit
+        WHERE user_id=:user_id AND name=:oldName";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $current_user_id, PDO::PARAM_INT);
+        $stmt->bindValue(':newName', $newName, PDO::PARAM_STR);
+        $stmt->bindValue(':oldName', $oldName, PDO::PARAM_STR);
+        $stmt->bindValue(':newLimit', $newLimit, PDO::PARAM_STR);
+
+        return $stmt->execute();
     }
 
     /**

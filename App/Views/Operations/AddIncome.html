@@ -21,8 +21,8 @@
 				{{ message.body }}
 			</div>
 			{% endfor %}
-            <div class="col-12 d-flex justify-content-center" action="/operations/addIncome">
-                <form id="income-form" method="post">
+            <div class="col-12 d-flex justify-content-center">
+                <form id="income-form" method="post" action="/operations/addIncome">
                     <div class="form-input">
                         <label id="amount-label">Kwota</label>
                         <input type="number" id="amount" name="amount" class="form-input-size" placeholder="0.00 zł" step="0.01" min="0.01" required />
@@ -49,6 +49,7 @@
                        <button type="submit" id="submit-button" name="submit">Dodaj</button>
                        <button type="button" id="cancel-button" onclick="location.href='/home'">Powrót</button>
                     </div>
+
                 </form>
             </div>
         </main>

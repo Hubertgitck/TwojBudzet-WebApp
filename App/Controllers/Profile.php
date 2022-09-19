@@ -33,42 +33,8 @@ class Profile extends Authenticated
      */
     public function showAction()
     {
-        View::renderTemplate('Profile/show.html', [
+        View::renderTemplate('Profile/Settings.html', [
             'user' => $this->user
         ]);
-    }
-
-    /**
-     * Show the form for editing the profile
-     *
-     * @return void
-     */
-    public function editAction()
-    {
-        View::renderTemplate('Profile/edit.html', [
-            'user' => $this->user
-        ]);
-    }
-
-    /**
-     * Update the profile
-     *
-     * @return void
-     */
-    public function updateAction()
-    {
-        if ($this->user->updateProfile($_POST)) {
-
-            Flash::addMessage('Zapisano zmiany!');
-
-            $this->redirect('/profile/show');
-
-        } else {
-
-            View::renderTemplate('Profile/edit.html', [
-                'user' => $this->user
-            ]);
-
-        }
     }
 }
