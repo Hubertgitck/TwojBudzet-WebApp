@@ -58,6 +58,13 @@ footer{
 	background-color: #fca544!important;
 }
 
+.nav-item{
+	border-right: dotted 2px #969696;
+}
+.nav-item:first-child{
+	border-left: dotted 2px #969696;
+}
+
 #limit-checkbox-label:hover{
 	cursor:pointer;
 }
@@ -174,6 +181,10 @@ footer{
 
 
 @media (max-width: 575px){
+	.nav-item{
+		border:none!important;
+	}
+
 	#logo{
 		font-size:50px;
 		line-height:120%;

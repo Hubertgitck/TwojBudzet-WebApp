@@ -22,7 +22,6 @@ async function postDataApi(apiUrl,bodyData = null) {
             throw response.reject();
         })
         .then((data) => result = { status: 'success', data})
-
         .catch((error) => result = { status: 'error', error })
 
     return result;

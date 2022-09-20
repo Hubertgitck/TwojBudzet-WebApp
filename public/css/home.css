@@ -76,13 +76,6 @@ main{
 	transform: scale(1.1);
 }
 
-#add-category{
-	background-color: #ff7912;
-	border: none;
-	border-radius: 10px;
-
-}
-
 @media (max-width: 575px){
 
 	#menu-list{

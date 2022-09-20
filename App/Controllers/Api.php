@@ -175,18 +175,13 @@ class Api extends Authenticated
         $userData['username'] = $this->route_params['newname'];
         $userData['email'] = $this->route_params['newemail'];
 
-
         $json = file_get_contents('php://input');
         $data = json_decode($json);
 
-        $userData['password'] = $data->password;
+        $userData['password'] = $data->password ?? null;
 
         $user = new User($userData);
 
         $user->updateUserProfile();
     }
-
-
-
-
 }

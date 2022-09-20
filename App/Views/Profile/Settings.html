@@ -13,6 +13,10 @@
     </div>
 
     <div class="row">
+        {% include 'navbar.html' %}
+    </div>
+
+    <div class="row">
         <div class="col-12 w-75 m-auto accordion accordion-flush" id="accordionOptions">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
@@ -376,6 +380,12 @@ $('#edit-user-button').on('click', function(){
         $('#modal-loading').modal('show');
         $('#user-settings-form').validate();
         if($('#user-settings-form').valid()){
+
+            username = $('input[name=username]').val();
+            email = $('input[name=email]').val();
+            password = $('input[name=password]').val();
+            editUserSettings(username,email,password);
+
             setTimeout( function(){
             $('#modal-loading').modal('hide');
             $('.modal-backdrop').hide();
@@ -383,11 +393,6 @@ $('#edit-user-button').on('click', function(){
 
             $('#edit-user-button').text('Edytuj');
             userSettingsInputs.attr('disabled', true);
-            username = $('input[name=username]').val();
-            email = $('input[name=email]').val();
-            password = $('input[name=password]').val();
-            editUserSettings(username,email,password);
-
             userPasswordInput.val("dummy123456");
         }
         //('input[name=username]').val());
@@ -397,10 +402,12 @@ $('#edit-user-button').on('click', function(){
 async function editUserSettings(username,email,password){
 
     url = `/api/updateUserProfile/${username}/${email}`;
-    password = {'password': password};
+    if (password){
+        password = {'password': password};
+    }
     result = await postDataApi(url,password);
 
-    if (!result['status'] == 'success'){
+    if (result['status'] != 'success'){
         $('#modal-failed').modal('show');
     }
 }
