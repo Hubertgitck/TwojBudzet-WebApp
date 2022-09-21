@@ -15,14 +15,14 @@ footer{
 	opacity: 70%;
 }
 
-#paymentMethod-input > label{
+#payment-methods > label{
 	display: block;
 	font-size: 16px;
 	cursor: pointer;
 	padding: 0 0 0 8px;
 }
 
-#paymentMethod-input > label:hover{
+#payment-methods> label:hover{
 	background-color: rgb(232, 234, 237, 0.6);
 	border-radius: 10px;
 }

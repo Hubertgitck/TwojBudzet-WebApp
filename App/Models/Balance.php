@@ -92,8 +92,7 @@ class Balance extends \Core\Model
 
         $db_expenses_summed['expenses_sum'] = $expenses_sum;
 
-        return array_merge($db_incomes_summed, $db_expenses_summed);
-
+        return array('incomes' => $db_incomes_summed, 'expenses' => $db_expenses_summed);
     }
 
      /**

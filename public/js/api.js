@@ -1,7 +1,13 @@
 async function getDataFromApi(apiUrl) {
     await fetch(apiUrl)
-        .then(response => response.json())
-        .then((data) => result = data);
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw response.reject();
+        })
+        .then((data) => result = { status: 'success', data})
+        .catch((error) => result = { status: 'error', error })
 
     return result;
 }

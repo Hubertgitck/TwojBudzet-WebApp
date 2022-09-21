@@ -38,10 +38,8 @@
 
                     <div class="form-input">
                         <label>Sposób płatności</label>
-                        <div id="paymentMethod-input">
-                            <label><input type="radio" name="payment_method" value="cash" class="radio-btn" checked />Gotówka</label>
-                            <label><input type="radio" name="payment_method" value="debit card" class="radio-btn" />Karta debetowa</label>
-                            <label><input type="radio" name="payment_method" value="credit card" class="radio-btn" />Karta kredytowa</label>
+                        <div id="payment-methods">
+
                         </div>
                     </div>
 
@@ -71,6 +69,7 @@
 {% endblock %}
 
 {% block footer %}
+<script src="/js/api.js"></script>
 
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -89,6 +88,7 @@
     $(document).ready(function () {
     loaddatepicker();
     appendExpensesCategoriesToSelectList();
+    appedPaymentMethodsToRadioList();
 });
 
     $(document).ajaxComplete(function () {
@@ -111,7 +111,6 @@ async function appendExpensesCategoriesToSelectList()
         .then(response => response.json())
         .then((data) => result = data);
 
-        console.log(result);
         for (let key in result){
             let option = document.createElement("option");
             option.text = result[key].name;
@@ -119,6 +118,34 @@ async function appendExpensesCategoriesToSelectList()
             let select = document.getElementById("expense-category");
             select.appendChild(option);
         }
+}
+
+async function appedPaymentMethodsToRadioList()
+{
+    url = "/api/getPaymentMethods";
+    result = await getDataFromApi(url);
+    if (result['status'] == 'success'){
+        for (let key in result.data){
+            let radioLabel = document.createElement("label");
+            let radioInput = document.createElement("input");
+            radioInput.type = 'radio';
+            radioInput.name = 'payment_method';
+            radioInput.value = result.data[key].name;
+            radioInput.className = 'radio-btn';
+            if (key == 0){
+                radioInput.setAttribute('checked', true);
+            }
+
+            console.log(radioInput);
+
+            radioLabel.textContent = result.data[key].name;
+            radioLabel.prepend(radioInput);
+            let select = document.getElementById("payment-methods");
+            select.appendChild(radioLabel);
+        }
     }
+}
+
 </script>
 {% endblock %}
+
