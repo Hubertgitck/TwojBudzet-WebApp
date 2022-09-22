@@ -135,11 +135,9 @@ async function appedPaymentMethodsToRadioList()
             if (key == 0){
                 radioInput.setAttribute('checked', true);
             }
-
-            console.log(radioInput);
-
             radioLabel.textContent = result.data[key].name;
             radioLabel.prepend(radioInput);
+
             let select = document.getElementById("payment-methods");
             select.appendChild(radioLabel);
         }

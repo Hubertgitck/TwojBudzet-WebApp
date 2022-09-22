@@ -50,12 +50,12 @@
                             <th scope="col">Kwota</th>
                         </tr>
                     </thead>
-                    <tbody id="incomes-tbody">
 
-                        <tr>
+                    <tbody id="incomes-tbody">
+                        <tr id="incomes-sum">
                             <th></th>
                             <td scope="row">Suma przychodów:</td>
-                            <td>{{db_data.incomes_sum.amount|number_format(2, ',')}} zł</td>
+                            <td id="incomes_sum-amount"> </td>
                         </tr>
                     </tbody>
                 </table>
@@ -79,81 +79,12 @@
                             <th scope="col">Kwota</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Jedzenie</td>
-                            <td>{{db_data.Food.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Mieszkanie</td>
-                            <td>{{db_data.Apartments.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Opieka zdrowotna</td>
-                            <td>{{db_data.Health.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Ubranie</td>
-                            <td>{{db_data.Clothes.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Higiena</td>
-                            <td>{{db_data.Hygiene.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Dzieci</td>
-                            <td>{{db_data.Kids.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Rozrywka</td>
-                            <td>{{db_data.Recreation.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Wycieczki</td>
-                            <td>{{db_data.Trip.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Książki</td>
-                            <td>{{db_data.Books.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Oszczędności</td>
-                            <td>{{db_data.Savings.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Na złotą jesień, czyli emeryturę</td>
-                            <td>{{db_data["For Retirement"].amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Spłata długów</td>
-                            <td>{{db_data["Debt Repayment"].amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Darowizna</td>
-                            <td>{{db_data.Gift.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td scope="row">Inne wydatki</td>
-                            <td>{{db_data.Another.amount|number_format(2, ',')}} zł</td>
-                        </tr>
-                        <tr>
+
+                    <tbody id="expenses-tbody">
+                        <tr id="expenses-sum">
                             <th></th>
                             <td scope="row">Suma wydatków: </td>
-                            <td>{{db_data.expenses_sum.amount|number_format(2, ',')}} zł</td>
+                            <td id="expenses_sum-amount"> </td>
                         </tr>
                     </tbody>
                 </table>
@@ -170,42 +101,94 @@
 
 
 {% block footer %}
+<script src="/js/api.js"></script>
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
 <script>
 
-jsonDbData = {{db_data|json_encode|raw}};
-console.log(jsonDbData);
+async function createIncomesTable()
+{
+    url = "/api/getIncomesCategories";
+    result = await getDataFromApi(url);
 
-$.each(jsonDbData['incomes'], function(key,value){
-    if (key != 'incomes_sum'){
+    if (result['status'] == 'success'){
+        //let incomesChart = google.visualization.arrayToDataTable;
+        //data.addColumn('string', 'Kategoria');
+        //data.addColumn('number', 'amount');
 
-        $("#incomes-tbody").prepend(rowMaker(key, value));
+        //data.addRows([
+        //['NewConfirmed', Number(globalData.NewConfirmed)],
+        //]);
 
+        let select = document.getElementById("incomes-tbody");
+
+        for (let key in result.data){
+            name = result.data[key].name;
+            select.insertBefore(rowMaker(name), select.lastElementChild);
+        }
+        for (let key in jsonDbData.incomes){
+            let selectAmount = document.getElementById(key+'-amount');
+
+            //let amount = jsonDbData.incomes[key].amount.toFixed(2);
+
+            //selectAmount.textContent = amount + ' zł' ;
+        }
+    }
+}
+
+
+async function createExpensesTable()
+{
+    url = "/api/getExpensesCategories";
+    result = await getDataFromApi(url);
+
+    if (result['status'] == 'success'){
+        let select = document.getElementById("expenses-tbody");
+        for (let key in result.data){
+
+            name = result.data[key].name;
+            select.insertBefore(rowMaker(name), select.lastElementChild);
+
+            if (jsonDbData.expenses[name]){
+                let selectAmount = document.getElementById(name+'-amount');
+                let amount = jsonDbData.expenses[name].amount.toFixed(2);
+                selectAmount.textContent = amount + ' zł' ;
+            }
+        }
 
     }
-})
+}
 
-function rowMaker(name, ammount){
+function rowMaker(name){
     let tr = document.createElement("tr");
     let tdEmpty = document.createElement("td");
     let tdCategory = document.createElement("td");
-    let tdAmmount = document.createElement("td");
+    let tdAmount = document.createElement("td");
 
     tr.append(tdEmpty);
     tdCategory.setAttribute('scope','row');
     tdCategory.textContent = name;
     tr.append(tdCategory);
-    tdAmmount.textContent = ammount;
-    tr.append(tdAmmount);
+
+    tdAmount.id = name + '-amount';
+    tdAmount.textContent = '0.00 zł';
+    tr.append(tdAmount);
 
     return tr;
 }
-
-
 </script>
+
 <script>
+    //get data from PHP and encode it to json
+    jsonDbData = {{db_data|json_encode|raw}};
+
+    $(document).ready(function () {
+
+    createIncomesTable();
+    createExpensesTable();
+    });
+
     $.datepicker.setDefaults({
     showOn: "button",
     buttonImage: "img/datepicker.png",
@@ -213,13 +196,14 @@ function rowMaker(name, ammount){
     buttonImageOnly: true,
     dateFormat: 'yy-mm-dd',
     yearRange: '2000:c'
-
     });
+
     $(function() {
         $("#post_at").datepicker();
         $("#post_at_to_date").datepicker();
     });
 </script>
+
 <script>
 
 	google.charts.load("current", {packages:["corechart"]});
@@ -291,6 +275,6 @@ function rowMaker(name, ammount){
         drawIncomesChart();
         drawExpensesChart();
     });
-    </script>
+</script>
 
 {% endblock %}

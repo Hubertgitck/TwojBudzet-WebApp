@@ -351,20 +351,23 @@ $('tbody').on('click','.delete-button', function(){
 
 //Edit button event listener
 $('tbody').on('click','.edit-button', function(){
-        rowToEdit = this.value;
-        currentAmount = $(this).closest('td').siblings('[data-amount]').data('amount');
+    rowToEdit = this.value;
+    currentAmount = $(this).closest('td').siblings('[data-amount]').attr('data-amount') ?? 0;
 
-        $('#edit-modal').modal('show');
-        if (currentAmount){
-            $('.limit').attr('disabled', false);
-            $('.form-check-input').prop('checked', true);
-        } else {
-            $('.limit').attr('disabled', true);
-            $('.form-check-input').prop('checked', false);
-        }
-        $('#edit-name').val(rowToEdit);
+    if (currentAmount != 0){
+        $('.limit').attr('disabled', false);
+        $('.form-check-input').prop('checked', true);
         $('#edit-limit').val(currentAmount);
+    } else {
+        $('#edit-limit').val(null);
+        $('#edit-limit').text('0.00 zł');
+        $('.limit').attr('disabled', true);
+        $('.form-check-input').prop('checked', false);
+    }
+    $('#edit-name').val(rowToEdit);
+    $('#edit-modal').modal('show');
 });
+
 
 //Edit user settings event listener
 $('#edit-user-button').on('click', function(){
@@ -418,7 +421,7 @@ async function editCategory(newName, categoryType, limit){
     if (categoryType =='income'){
         url = '/api/edit' + categoryType + `Category/${oldName}/${newName}`;
     } else if (categoryType == 'expense') {
-        url = '/api/edit' + categoryType + `Category/${oldName}/${newName}/${limit}`;
+        url = '/api/edit' + categoryType + `Category/${oldName}/${newName}/${limit ?? ''}`;
     } else if (categoryType == 'payment-method'){
         url = `/api/editPaymentMethod/${oldName}/${newName}`;
     }
@@ -430,10 +433,13 @@ async function editCategory(newName, categoryType, limit){
     if (result['status'] == 'success'){
         $('#'+oldName).children().first().text(newName);
         $('#'+oldName).attr("value", newName);
+        tdLimit = $('#'+oldName).children().eq(1);
         if (limit){
-            tdLimit = $('#'+oldName).children().eq(1);
             tdLimit.attr('data-amount', limit);
-            tdLimit.text('Limit: ' + tdLimit.attr('data-amount')) ;
+            tdLimit.text('Limit: ' + parseFloat(tdLimit.attr('data-amount')).toFixed(2) + ' zł') ;
+        } else{
+            tdLimit.removeAttr('data-amount');
+            tdLimit.text('');
         }
         $('#modal-success').modal('show');
     } else {
@@ -448,8 +454,8 @@ async function appendIncomesCategoriesToList(newCategoryName = '')
     if (!newCategoryName){
         result = await getDataFromApi(url);
 
-        for (let key in result){
-            name = result[key].name;
+        for (let key in result.data){
+            name = result.data[key].name;
             $("#incomes-tbody").append(rowMaker(name));
         }
     } else {
@@ -463,9 +469,9 @@ async function appendExpensesCategoriesToList(newCategoryName = '')
     if (!newCategoryName){
     result = await getDataFromApi(url);
 
-        for (let key in result){
-            name = result[key].name;
-            limit = result[key].max_limit;
+        for (let key in result.data){
+            name = result.data[key].name;
+            limit = result.data[key].max_limit;
             $("#expenses-tbody").append(rowMaker(name,limit));
         }
     } else {
@@ -479,8 +485,8 @@ async function appendPaymentMethodsToList(newMethodName = '')
     if (!newMethodName){
         result = await getDataFromApi(url);
 
-        for (let key in result){
-            name = result[key].name;
+        for (let key in result.data){
+            name = result.data[key].name;
             $("#payment-methods-tbody").append(rowMaker(name));
         }
     } else {
@@ -574,13 +580,16 @@ function rowMaker(name, limit = null){
     if (limit!=null){
         let tdLimit = document.createElement("td");
         tdLimit.setAttribute("data-amount", limit)
-        tdLimit.textContent = 'Limit: ' + tdLimit.getAttribute('data-amount') ;
+        tdLimit.textContent = 'Limit: ' + parseFloat(tdLimit.getAttribute('data-amount')).toFixed(2) + ' zł' ;
         tdLimit.className = 'limit-table';
         tr.append(tdLimit);
     } else if (limit ===null){
         let tdLimit = document.createElement("td");
+        tdLimit.className = 'limit-table';
         tr.append(tdLimit);
     }
+
+
 
     tdButtons.append(li);
     tr.append(tdButtons);
@@ -601,7 +610,7 @@ $('#add-category-form').submit(function(event){
         if ($('input[name=limit]').is(':visible')){
             limit = $('input[name=limit]').val();
         } else{
-            limit = null;
+            limit = '';
         }
         insertCategoryToDb(newCategoryName, categoryType, limit);
     }
@@ -611,7 +620,7 @@ $('#edit-modal-form').submit(function(event){
     event.preventDefault();
     if ($(this).valid()){
         newCategoryName = $('input[name=edit-name]').val();
-        if ($('input[name=edit-limit]').is(':visible')){
+        if ($(this).find('input[type=checkbox]').is(':checked')){
             limit = $('input[name=edit-limit]').val();
         } else{
             limit = null;
