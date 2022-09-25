@@ -140,17 +140,34 @@ class Expense extends \Core\Model
         $stmt->bindValue(':oldName', $oldName, PDO::PARAM_STR);
         $stmt->bindValue(':newLimit', $newLimit, PDO::PARAM_STR);
 
-        return $stmt->execute();
+        $stmt->execute();
     }
 
     /**
-     * addIncome function
+     * get current category limit
      *
      * @return array
      */
 
-    public function getCategoryLimit()
+    public static function checkExpenseLimit($categoryName, $date)
     {
+        $current_user_id = $_SESSION['user_id'];
+        $from_date = date('Y-m-01', strtotime($date));
+        $to_date = date('Y-m-t', strtotime($date));
 
+        $sql = "SELECT SUM(expe.amount) AS 'sum' , (SELECT max_limit FROM expenses_category_assigned_to_users WHERE name = :categoryName) AS 'limit'
+        FROM expenses_category_assigned_to_users cat
+        JOIN expenses expe
+        ON cat.id = expe.expense_category_assigned_to_user_id
+        WHERE cat.user_id = :user_id AND cat.name = :categoryName AND date_of_expense BETWEEN '$from_date' AND '$to_date' ";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $current_user_id, PDO::PARAM_INT);
+        $stmt->bindValue(':categoryName', $categoryName, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt -> fetchAll(PDO::FETCH_ASSOC);
     }
 }

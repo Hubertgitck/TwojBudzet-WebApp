@@ -94,6 +94,19 @@ class Api extends Authenticated
     }
 
     /**
+     * edit expense category in db
+     *
+     * @return category names array
+     */
+    public function checkExpenseLimitAction()
+    {
+        $categoryName = $this->route_params['name'];
+        $selectedDate = $this->route_params['date'];
+
+        echo json_encode(Expense::checkExpenseLimit($categoryName, $selectedDate), JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
      * Add payment method to database
      *
      * @return

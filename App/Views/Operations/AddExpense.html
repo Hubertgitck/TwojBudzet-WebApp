@@ -25,7 +25,7 @@
 			</div>
 			{% endfor %}
             <div class="col-12 d-flex justify-content-center">
-                <form id="expense-form" method="post" action="/operations/addExpense">
+                <form id="expense-form" class="col-lg-6" method="post" action="/operations/addExpense">
                     <div class="form-input">
                         <label id="amount-label">Kwota</label>
                         <input type="number" id="amount" name="amount" class="form-input-size" placeholder="0.00 zł" step="0.01" min="0.01" required />
@@ -48,6 +48,11 @@
                         <select id="expense-category" name="expenses_category" size="1" required>
                             <option value="" disabled selected>Wybierz wydatek</option>
                         </select>
+
+                    </div>
+
+                    <div class="form-input" id="expense-limit-display">
+
                     </div>
 
 
@@ -70,6 +75,7 @@
 
 {% block footer %}
 <script src="/js/api.js"></script>
+<script src="/js/app.js"></script>
 
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -80,19 +86,26 @@
 
 <!--Override default date picker with jQuery datepicker-->
 <script>
-    $.datepicker.setDefaults({
-    dateFormat: 'yy-mm-dd',
-    yearRange: '2000:c'
-    });
+$.datepicker.setDefaults({
+dateFormat: 'yy-mm-dd',
+yearRange: '2000:c',
+});
 
-    $(document).ready(function () {
+$(document).ready(function () {
     loaddatepicker();
     appendExpensesCategoriesToSelectList();
     appedPaymentMethodsToRadioList();
 });
 
-    $(document).ajaxComplete(function () {
+$(document).ajaxComplete(function () {
     loaddatepicker();
+});
+
+$('#expense-category, #date').change(function() {
+    selectedCategory = $('#expense-category').val();
+    selectedDate = $('#date').val();
+
+    checkLimit(selectedCategory, selectedDate);
 });
 
 function loaddatepicker()
@@ -141,6 +154,42 @@ async function appedPaymentMethodsToRadioList()
             let select = document.getElementById("payment-methods");
             select.appendChild(radioLabel);
         }
+    }
+}
+
+async function checkLimit(categoryName, selectedDate)
+{
+    url = `/api/checkExpenseLimit/${categoryName}/${selectedDate}`;
+    result = await getDataFromApi(url);
+    console.log(result);
+    if (result['status'] == 'success'){
+        limitWarningHandler(result);
+    }
+}
+
+function  limitWarningHandler(result)
+{
+    limitDiv = $('#expense-limit-display');
+    limit = result.data[0].limit;
+
+    if (limit){
+        expenseSum = result.data[0].sum ?? '0.00';
+
+        if (expenseSum > limit){
+            limitDiv.text(`Przekroczono limit ${limit} zł, aktualne wydatki dla wybranej kategorii to: ${expenseSum} zł`);
+            limitDiv.removeClass('alert-warning');
+            limitDiv.addClass('alert alert-danger');
+            $('#submit-button').attr('disabled', true);
+        } else if (expenseSum < limit){
+            limitDiv.text(`Wydano ${expenseSum} zł z limitu ${limit} zł`);
+            limitDiv.removeClass('alert-danger');
+            limitDiv.addClass('alert alert-warning');
+            $('#submit-button').attr('disabled', false);
+        }
+    }else {
+        limitDiv.text('');
+        limitDiv.attr('class', 'form-input');
+        $('#submit-button').attr('disabled', false);
     }
 }
 

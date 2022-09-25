@@ -55,7 +55,7 @@
                         <tr id="incomes-sum">
                             <th></th>
                             <td scope="row">Suma przychodów:</td>
-                            <td id="incomes_sum-amount"> </td>
+                            <td id="incomes_sum-amount"> {{ db_data.incomes.incomes_sum.amount | number_format(2) }} zł</td>
                         </tr>
                     </tbody>
                 </table>
@@ -84,7 +84,7 @@
                         <tr id="expenses-sum">
                             <th></th>
                             <td scope="row">Suma wydatków: </td>
-                            <td id="expenses_sum-amount"> </td>
+                            <td id="expenses_sum-amount">{{ db_data.expenses.expenses_sum.amount | number_format(2) }} zł</td>
                         </tr>
                     </tbody>
                 </table>
@@ -145,18 +145,19 @@ async function createExpensesTable()
 
     if (result['status'] == 'success'){
         let select = document.getElementById("expenses-tbody");
+
         for (let key in result.data){
 
             name = result.data[key].name;
             select.insertBefore(rowMaker(name), select.lastElementChild);
 
             if (jsonDbData.expenses[name]){
+
                 let selectAmount = document.getElementById(name+'-amount');
                 let amount = jsonDbData.expenses[name].amount.toFixed(2);
                 selectAmount.textContent = amount + ' zł' ;
             }
         }
-
     }
 }
 
@@ -182,7 +183,7 @@ function rowMaker(name){
 <script>
     //get data from PHP and encode it to json
     jsonDbData = {{db_data|json_encode|raw}};
-
+    console.log(jsonDbData);
     $(document).ready(function () {
 
     createIncomesTable();
