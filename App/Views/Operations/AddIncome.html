@@ -100,7 +100,6 @@ async function appendIncomesCategoriesToSelectList()
         .then(response => response.json())
         .then((data) => result = data);
 
-        console.log(result);
         for (let key in result){
             name = result[key].name;
 

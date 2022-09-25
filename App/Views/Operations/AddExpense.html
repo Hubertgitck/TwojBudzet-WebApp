@@ -161,7 +161,7 @@ async function checkLimit(categoryName, selectedDate)
 {
     url = `/api/checkExpenseLimit/${categoryName}/${selectedDate}`;
     result = await getDataFromApi(url);
-    console.log(result);
+
     if (result['status'] == 'success'){
         limitWarningHandler(result);
     }
