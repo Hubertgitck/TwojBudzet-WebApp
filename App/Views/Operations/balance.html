@@ -47,7 +47,7 @@
                         <tr>
                             <th class="w-auto" scope="col">#</th>
                             <th scope="col">Kategoria</th>
-                            <th scope="col">Kwota</th>
+                            <th scope="col">Kwota [zł]</th>
                         </tr>
                     </thead>
 
@@ -76,7 +76,7 @@
                         <tr>
                             <th class="w-auto" scope="col">#</th>
                             <th scope="col">Kategoria</th>
-                            <th scope="col">Kwota</th>
+                            <th scope="col">Kwota [zł]</th>
                         </tr>
                     </thead>
 
@@ -105,89 +105,14 @@
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
-<script>
-
-async function createIncomesTable()
-{
-    url = "/api/getIncomesCategories";
-    result = await getDataFromApi(url);
-
-    if (result['status'] == 'success'){
-        //let incomesChart = google.visualization.arrayToDataTable;
-        //data.addColumn('string', 'Kategoria');
-        //data.addColumn('number', 'amount');
-
-        //data.addRows([
-        //['NewConfirmed', Number(globalData.NewConfirmed)],
-        //]);
-
-        let select = document.getElementById("incomes-tbody");
-
-        for (let key in result.data){
-            name = result.data[key].name;
-            select.insertBefore(rowMaker(name), select.lastElementChild);
-        }
-        for (let key in jsonDbData.incomes){
-            let selectAmount = document.getElementById(key+'-amount');
-
-            //let amount = jsonDbData.incomes[key].amount.toFixed(2);
-
-            //selectAmount.textContent = amount + ' zł' ;
-        }
-    }
-}
-
-
-async function createExpensesTable()
-{
-    url = "/api/getExpensesCategories";
-    result = await getDataFromApi(url);
-
-    if (result['status'] == 'success'){
-        let select = document.getElementById("expenses-tbody");
-
-        for (let key in result.data){
-
-            name = result.data[key].name;
-            select.insertBefore(rowMaker(name), select.lastElementChild);
-
-            if (jsonDbData.expenses[name]){
-
-                let selectAmount = document.getElementById(name+'-amount');
-                let amount = jsonDbData.expenses[name].amount.toFixed(2);
-                selectAmount.textContent = amount + ' zł' ;
-            }
-        }
-    }
-}
-
-function rowMaker(name){
-    let tr = document.createElement("tr");
-    let tdEmpty = document.createElement("td");
-    let tdCategory = document.createElement("td");
-    let tdAmount = document.createElement("td");
-
-    tr.append(tdEmpty);
-    tdCategory.setAttribute('scope','row');
-    tdCategory.textContent = name;
-    tr.append(tdCategory);
-
-    tdAmount.id = name + '-amount';
-    tdAmount.textContent = '0.00 zł';
-    tr.append(tdAmount);
-
-    return tr;
-}
-</script>
 
 <script>
     //get data from PHP and encode it to json
     jsonDbData = {{db_data|json_encode|raw}};
-    console.log(jsonDbData);
+    google.charts.load("current", {packages:["corechart"]});
     $(document).ready(function () {
-
-    createIncomesTable();
-    createExpensesTable();
+        google.charts.setOnLoadCallback(createIncomesTable);
+        google.charts.setOnLoadCallback(createExpensesTable);
     });
 
     $.datepicker.setDefaults({
@@ -207,75 +132,113 @@ function rowMaker(name){
 
 <script>
 
-	google.charts.load("current", {packages:["corechart"]});
-	google.charts.setOnLoadCallback(drawIncomesChart);
-	google.charts.setOnLoadCallback(drawExpensesChart);
-	function drawIncomesChart() {
-		let data = google.visualization.arrayToDataTable([
-			['Category', 'Amount'],
-			['Wynagrodzenie',   {{db_data.Salary.amount|default("0")}}  ],
-			['Odsetki bankowe',    {{db_data.Interest.amount|default("0")}} ],
-			['Sprzedaż na allegro', {{db_data.Allegro.amount|default("0")}} ],
-			['Inne', {{db_data.Another.amount|default("0")}}]
-		]);
+async function createIncomesTable()
+{
+    let incomesData = new google.visualization.DataTable();
+    incomesData.addColumn('string', 'Kategoria');
+    incomesData.addColumn('number', 'amount');
 
-		let options = {
-            width: '100%',
-            height: '100%',
-            pieHole: 0.4,
-			backgroundColor: 'none',
-			sliceVisibilityThreshold:0
-		};
+    url = "/api/getIncomesCategories";
+    result = await getDataFromApi(url);
 
-		let chart = new google.visualization.PieChart(document.getElementById('piechart_3d_incomes'));
-		chart.draw(data, options);
-        chart.setSelection([{'column': 1}]);
-	  }
+    if (result['status'] == 'success'){
+        let select = document.getElementById("incomes-tbody");
 
-	function drawExpensesChart() {
-		let data = google.visualization.arrayToDataTable([
-			['Category', 'Amount'],
-			['Jedzenie', {{db_data.Food.amount|default("0")}}],
-			['Mieszkanie', {{db_data.Apartments.amount|default("0")}}],
-			['Opieka zdrowotna', {{db_data.Health.amount|default("0")}}],
-			['Ubranie', {{db_data.Clothes.amount|default("0")}}],
-			['Higiena', {{db_data.Hygiene.amount|default("0")}}],
-			['Dzieci', {{db_data.Kids.amount|default("0")}}],
-			['Rozrywka	', {{db_data.Recreation.amount|default("0")}}],
-			['Wycieczka	', {{db_data.Trip.amount|default("0")}}],
-			['Książki	', {{db_data.Books.amount|default("0")}}],
-			['Oszczędności	', {{db_data.Savings.amount|default("0")}}],
-			['Na złotą jesień, czyli emeryturę', {{db_data["For Retirement"].amount|default("0")}}],
-			['Spłata długów', {{db_data["Debt Repayment"].amount|default("0")}}],
-			['Darowizna', {{db_data.Gift.amount|default("0")}}],
-			['Inne wydatki', {{db_data.Another.amount|default("0")}}]
-		]);
+        for (let key in result.data){
+            let name = result.data[key].name;
+            select.insertBefore(rowMaker(name), select.lastElementChild);
 
-		let options = {
-            width: 'auto',
-            height: 'auto',
-            pieHole: 0.4,
-			backgroundColor: 'none',
-			sliceVisibilityThreshold:0
-		};
+            let amount = 0;
+            if (jsonDbData.incomes[name]){
+                amount = jsonDbData.incomes[name].amount.toFixed(2);
+                document.getElementById(name + '-amount').textContent = amount;
+                incomesData.addRow([name, Number(amount)]);
+            }
+        }
+    drawIncomesChart(incomesData);
+    }
+ }
 
-		let chart = new google.visualization.PieChart(document.getElementById('piechart_3d_expenses'));
-		chart.draw(data, options);
-	}
 
-    //resize event
-    $(window).resize(function() {
-    if(this.resizeTO) clearTimeout(this.resizeTO);
-    this.resizeTO = setTimeout(function() {
-        $(this).trigger('resizeEnd');
-    }, 500);
-    });
+async function createExpensesTable()
+{
+    let expensesData = new google.visualization.DataTable();
+    expensesData.addColumn('string', 'Kategoria');
+    expensesData.addColumn('number', 'amount');
 
-    //redraw graph when window resize is completed
-    $(window).on('resizeEnd', function() {
-        drawIncomesChart();
-        drawExpensesChart();
-    });
+    url = "/api/getExpensesCategories";
+    result = await getDataFromApi(url);
+
+    if (result['status'] == 'success'){
+        let select = document.getElementById("expenses-tbody");
+
+        for (let key in result.data){
+            let name = result.data[key].name;
+            select.insertBefore(rowMaker(name), select.lastElementChild);
+            let amount = 0;
+            if (jsonDbData.expenses[name]){
+                amount = jsonDbData.expenses[name].amount.toFixed(2);
+                document.getElementById(name + '-amount').textContent = amount;
+                expensesData.addRow([name, Number(amount)]);
+            }
+        }
+    }
+    drawExpensesChart(expensesData);
+}
+
+function rowMaker(name){
+    let tr = document.createElement("tr");
+    let tdEmpty = document.createElement("td");
+    let tdCategory = document.createElement("td");
+    let tdAmount = document.createElement("td");
+
+    tr.append(tdEmpty);
+    tdCategory.setAttribute('scope','row');
+    tdCategory.textContent = name;
+    tr.append(tdCategory);
+
+    tdAmount.textContent = '0.00';
+    tdAmount.id = name + '-amount';
+    tr.append(tdAmount);
+
+    return tr;
+}
+</script>
+
+<script>
+
+function drawIncomesChart(data) {
+    let options = {
+        width: '100%',
+        height: '100%',
+        pieHole: 0.4,
+        backgroundColor: 'none',
+        sliceVisibilityThreshold:0
+    };
+
+    let chart = new google.visualization.PieChart(document.getElementById('piechart_3d_incomes'));
+    chart.draw(data, options);
+
+    if (data.getNumberOfRows() == 0) {
+        $("#piechart_3d_incomes").find("svg text").text("Brak przychodów w danym okresie");
+    }
+}
+
+function drawExpensesChart(data) {
+    let options = {
+        width: 'auto',
+        height: 'auto',
+        pieHole: 0.4,
+        backgroundColor: 'none',
+        sliceVisibilityThreshold:0
+    };
+
+    let chart = new google.visualization.PieChart(document.getElementById('piechart_3d_expenses'));
+    chart.draw(data, options);
+    if (data.getNumberOfRows() == 0) {
+        $("#piechart_3d_expenses").find("svg text").text("Brak wydatków w danym okresie");
+    }
+}
 </script>
 
 {% endblock %}
