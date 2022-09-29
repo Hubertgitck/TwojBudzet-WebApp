@@ -179,17 +179,14 @@ function  limitWarningHandler(result)
             limitDiv.text(`Przekroczono limit ${limit} zł, aktualne wydatki dla wybranej kategorii to: ${parseFloat(expenseSum).toFixed(2)} zł`);
             limitDiv.removeClass('alert-warning');
             limitDiv.addClass('alert alert-danger');
-            $('#submit-button').attr('disabled', true);
         } else if (expenseSum <= limit){
             limitDiv.text(`Wydano ${parseFloat(expenseSum).toFixed(2)} zł z limitu ${limit} zł`);
             limitDiv.removeClass('alert-danger');
             limitDiv.addClass('alert alert-warning');
-            $('#submit-button').attr('disabled', false);
         }
     }else {
         limitDiv.text('');
         limitDiv.attr('class', 'form-input');
-        $('#submit-button').attr('disabled', false);
     }
 }
 
