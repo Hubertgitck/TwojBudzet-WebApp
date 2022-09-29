@@ -155,7 +155,7 @@ class Expense extends \Core\Model
         $from_date = date('Y-m-01', strtotime($date));
         $to_date = date('Y-m-t', strtotime($date));
 
-        $sql = "SELECT SUM(expe.amount) AS 'sum' , (SELECT max_limit FROM expenses_category_assigned_to_users WHERE name = :categoryName) AS 'limit'
+        $sql = "SELECT SUM(expe.amount) AS 'sum' , (SELECT max_limit FROM expenses_category_assigned_to_users WHERE name = :categoryName and user_id = :user_id ) AS 'limit'
         FROM expenses_category_assigned_to_users cat
         JOIN expenses expe
         ON cat.id = expe.expense_category_assigned_to_user_id
